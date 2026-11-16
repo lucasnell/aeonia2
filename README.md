@@ -40,9 +40,11 @@ Here are descriptions of each:
 * `_plots`: Folder used to store figures created using R scripts.
     None are present in this repo, but they can be created using
     the provided scripts.
-* `_scripts`: Folder containing R scripts that create the plots used
-    in the manuscript. They are ordered by use in the paper, and
+* `_scripts`: Folder containing R and shell scripts that run the simulations
+    and create the plots used in the manuscript.
+    They are ordered by use in the paper, and
     each file contains a description of what it contains.
+    See "Reproducing the figures" below for more.
 * `aeonia.Rproj`: RStudio project file for this project.
 * `data`: Folder containing data used in the R package.
 * `data-raw`: Folder containing a script (`gameofclones.R`) showing how I
@@ -91,7 +93,7 @@ If you’d rather avoid `renv`, then you can install all the packages (in
 the versions I used) this way:
 
 ``` r
-if (!requireNamespace("jsonlite", quietly = TRUE)) install.package("jsonlite")
+if (!requireNamespace("jsonlite", quietly = TRUE)) install.packages("jsonlite")
 pkg_list <- jsonlite::read_json("renv.lock")[["Packages"]]
 pkg_vers <- lapply(pkg_list, \(x) paste0(x[["Package"]], "@", x[["Version"]]))
 
@@ -104,13 +106,53 @@ name as the project, so there are three ways to install `aeonia`:
 
 ``` r
 # If using `renv`:
-renv::install("lucasnell/aeonia@v0.0.2.3")
+renv::install("lucasnell/aeonia@v0.0.2.4")
 
 # If not using `renv`:
-if (!requireNamespace("remotes", quietly = TRUE)) install.package("remotes")
-remotes::install_github("lucasnell/aeonia@v0.0.2.3")
+if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+remotes::install_github("lucasnell/aeonia@v0.0.2.4")
 
 # If you've downloaded this repo, you can also install from source:
-if (!requireNamespace("devtools", quietly = TRUE)) install.package("devtools")
+if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
 pkg <- devtools::build()
 install.packages(pkg, repos = NULL, type = "source")
+```
+
+
+
+# Reproducing the figures
+
+After setting up the R environment and installing `aeonia` (see above),
+run the scripts in this order.
+Unless stated otherwise, scripts are run from this project's main directory
+(the one containing `aeonia.Rproj`).
+
+1. Small landscapes (local):
+   `_scripts/01-small/01-extremes.R`, then
+   `_scripts/01-small/02b-extremes-manip.R`.
+2. Large landscapes (SLURM cluster; we used Cornell BioHPC):
+   copy `_scripts/02-large-hpc/00-large-hpc-preamble.R` to the cluster's
+   home folder, then run `01-large-main.sh`, `02-large-interior.sh`,
+   `03-large-r_fly.sh`, `04-large-densities.R`, and `05-large-emp-zeta.R`
+   from `_scripts/02-large-hpc`, each in its own subfolder of that home folder.
+   The commands to move each script to the cluster, run it, and copy its
+   output back into `_scripts/interm-data` are in comments at the top of
+   each script.
+3. Landscapes for virus-attraction simulations (local):
+   `source("_scripts/02-large-hpc/00-large-hpc-preamble.R")` to create
+   `_scripts/interm-data/large-landscapes.rds`.
+   It sets a fixed seed, so with the same R and `aeonia` versions it
+   produces the same landscapes as on the cluster.
+4. Large-landscape plots (local):
+   `_scripts/03-large/01b-large-results.R`,
+   `_scripts/03-large/02-large-densities-plots.R`,
+   `_scripts/03-large/03-large-emp-zeta-plots.R`, and
+   `_scripts/03-large/04-virus-attract.R`.
+
+Each local script sets `.overwrite <- FALSE` near its top.
+With this setting, a simulation is only run, and a plot only saved,
+if its output file does not already exist.
+Set `.overwrite <- TRUE` to re-run simulations and re-save plots regardless.
+Output folders are created automatically.
+Figures are written to `_plots` and intermediate simulation output to
+`_scripts/interm-data`; each has a `README.md` describing its files.

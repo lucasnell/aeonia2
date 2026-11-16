@@ -18,19 +18,23 @@
 # I first moved this script and the preamble over to bioHPC using the following:
 #
 # cd ~/GitHub/Cornell/aeonia/_scripts
-# scp ./02-large-hphc/02-large-interior.sh \
-#     biohpc:/home2/$USER/02-large-interior/
+# # cluster username, from the `User` line for host `biohpc` in ~/.ssh/config:
+# BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+# ssh biohpc 'mkdir -p /home2/$USER/02-large-interior/logs'
+# scp ./02-large-hpc/02-large-interior.sh \
+#     biohpc:/home2/${BIOHPC_USER}/02-large-interior/
 #
 # This was then run on BioHPC in a non-interactive batch job started with the following:
 #
 # cd /home2/$USER/02-large-interior/
-# mkdir -p logs
 # sbatch 02-large-interior.sh
 #
 # Then, when the jobs are done (assuming you're back on your desktop in
 # directory `~/GitHub/Cornell/aeonia/_scripts`):
 #
-# scp biohpc:/home2/$USER/02-large-interior/large-interior*.rds \
+# BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+# mkdir -p ./interm-data/large-interior
+# scp biohpc:/home2/${BIOHPC_USER}/02-large-interior/large-interior*.rds \
 #     ./interm-data/large-interior/
 #
 #

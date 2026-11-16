@@ -296,15 +296,19 @@ supp_line_plotter <- function(par_name, seeds, .incl_ninf = FALSE) {
 
 
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/supp/extremes-manip-lines-pseudo_surv-all-outcomes.pdf")) {
     save_plot("_plots/supp/extremes-manip-lines-pseudo_surv-all-outcomes.pdf",
               supp_line_plotter("pseudo_surv", c(1546463762, 915602074)),
               width = 6.5, height = 5)
-    # Because K isn't shown in main text, we also want to plot n_infected
+}
+# Because K isn't shown in main text, we also want to plot n_infected
+if (.overwrite || !file.exists("_plots/supp/extremes-manip-lines-K-all-outcomes.pdf")) {
     save_plot("_plots/supp/extremes-manip-lines-K-all-outcomes.pdf",
               supp_line_plotter("K", c(1609768752, 1975481712), .incl_ninf = TRUE),
               width = 6.5, height = 7)
-    # Because the `wasp_resp` only differs by zeta, we plot that differently:
+}
+# Because the `wasp_resp` only differs by zeta, we plot that differently:
+if (.overwrite || !file.exists("_plots/supp/extremes-manip-lines-zeta-all-outcomes.pdf")) {
     save_plot("_plots/supp/extremes-manip-lines-zeta-all-outcomes.pdf",
               supp_line_plotter("zeta", 65130342),
               width = 4, height = 5)
@@ -520,7 +524,7 @@ thresh_p <- thresh_sims |>
 
 # thresh_p
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/supp/extremes-manip-thresholds.pdf")) {
     save_plot("_plots/supp/extremes-manip-thresholds.pdf", thresh_p, width = 6.5, height = 6)
 }
 
@@ -589,7 +593,7 @@ yn_hm_p <- {pseudo_eff_heatmap("p_emerge", "weak", "Y0", "N0", .z_pal = "broc",
 
 
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/supp/extremes-manip-Y0-N0-heatmaps.pdf")) {
     save_plot("_plots/supp/extremes-manip-Y0-N0-heatmaps.pdf", yn_hm_p, 6.5, 7.5)
 }
 
@@ -637,7 +641,7 @@ manip_sims |>
 
 
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/main/lines-zeta.pdf")) {
     # Line plot for zeta:
     save_plot("_plots/main/lines-zeta.pdf",
               one_manip_plotter(levels(manip2_sims$wasp_resp), "zeta",
@@ -662,7 +666,7 @@ ps_manip_p <- map2(levels(wasp_resp_fct), c(188673947, 899304975),
                guides = "collect", axes = "collect")
 # ps_manip_p
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/main/extremes-manip-lines-pseudo_surv.pdf")) {
     save_plot("_plots/main/extremes-manip-lines-pseudo_surv.pdf",
               ps_manip_p & illustrator_theme, width = 4, height = 2)
 }

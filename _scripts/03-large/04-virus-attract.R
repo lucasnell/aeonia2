@@ -235,7 +235,7 @@ inf_p <- map(c(1, 5), infection_plotter) |>
 
 
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/supp/virus-attract.pdf")) {
     save_plot("_plots/supp/virus-attract.pdf", inf_p, width = 7.5, height = 4)
 }
 

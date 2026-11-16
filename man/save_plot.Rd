@@ -18,7 +18,8 @@ save_plot(
 }
 \arguments{
 \item{filename}{Filename of plot. Extension should be \code{".pdf"}, \code{".svg"}, or \code{".png"}
-and will determine what type of plot is created.}
+and will determine what type of plot is created.
+Missing parent directories are created.}
 
 \item{plot}{Plot object or function to create plot}
 

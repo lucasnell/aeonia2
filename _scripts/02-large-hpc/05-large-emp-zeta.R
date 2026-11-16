@@ -4,14 +4,23 @@
 #' Do NOT run this locally!
 #'
 #'
-#' Instead run on cluster using an interactive job:
-#' cd /home2/$USER/04-large-emp-zeta
+#' Instead, move it to the cluster (from `~/GitHub/Cornell/aeonia/_scripts`):
+#' # cluster username, from the `User` line for host `biohpc` in ~/.ssh/config:
+#' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+#' ssh biohpc 'mkdir -p /home2/$USER/05-large-emp-zeta'
+#' scp ./02-large-hpc/05-large-emp-zeta.R biohpc:/home2/${BIOHPC_USER}/05-large-emp-zeta/
+#'
+#' Then run it on the cluster using an interactive job:
+#' cd /home2/$USER/05-large-emp-zeta
 #' srun -N 1 -n 1 -c 50 --mem=200G --time=20:00:00 --job-name="lp-zeta" --pty R --vanilla
+#' # (inside R:)
+#' source("05-large-emp-zeta.R")
 #'
 #' Then, when the jobs are done (assuming you're back on your desktop in
 #' directory `~/GitHub/Cornell/aeonia/_scripts`):
 #'
-#' export RDS_DIR="/home2/$USER/04-large-emp-zeta"
+#' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+#' export RDS_DIR="/home2/${BIOHPC_USER}/05-large-emp-zeta"
 #' scp biohpc:${RDS_DIR}/*.csv ./interm-data/
 
 
@@ -122,13 +131,6 @@ emp_zeta_sims <- crossing(np = n_pseudo_lvls,
                                        "[{cli::pb_elapsed}] |",
                                        "ETA: {cli::pb_eta}"))) |>
     list_rbind()
-
-
-# Saving this on the cluster but not using this file on my computer
-# bc it's pretty large (>5 GB).
-# Instead, I'm saving summarized versions below.
-write_csv(emp_zeta_sims, "large-zeta-sims.csv.gz")
-
 
 
 # Takes ~ 2 min

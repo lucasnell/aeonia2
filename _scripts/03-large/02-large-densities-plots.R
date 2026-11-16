@@ -2,7 +2,7 @@
 #'
 #' Density plots for larger landscape simulations.
 #'
-#' Must run `./02-large-hpc/03-large-densities.R` on the cluster first.
+#' Must run `_scripts/02-large-hpc/04-large-densities.R` on the cluster first.
 #'
 
 
@@ -13,7 +13,7 @@ source("_scripts/00-preamble.R")
 .overwrite <- FALSE
 
 
-if (!file.exists(interm_files$dens_sims)) stop("Run 02-large-hpc/03-large-densities.R first!")
+if (!file.exists(interm_files$dens_sims)) stop("Run _scripts/02-large-hpc/04-large-densities.R first!")
 
 
 dens_sims <- read_csv(interm_files$dens_sims, col_types = "ciidddddddd") |>
@@ -104,7 +104,7 @@ total_dens_p <- total_dens_p_list[[1]] +
     illustrator_theme
 # total_dens_p
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/main/densities-large.pdf")) {
     save_plot("_plots/main/densities-large.pdf", total_dens_p, width = 5, height = 2)
 }
 

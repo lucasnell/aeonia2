@@ -10,7 +10,6 @@ source("_scripts/00-preamble.R")
 
 .overwrite <- FALSE
 
-if (! dir.exists("_plots/extremes")) dir.create("_plots/extremes")
 
 
 
@@ -298,7 +297,7 @@ timeseries_p <- crossing(wasp_resp = sort(unique(weak_strong_sims$wasp_resp)),
 # timeseries_p
 
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/main/extremes/timeseries.pdf")) {
     save_plot("_plots/main/extremes/timeseries.pdf",
               timeseries_p & illustrator_theme, width = 6.7, height = 6)
 }
@@ -323,7 +322,7 @@ z_pa_curve <- tibble(z = 1:3e3, ap = alate_prop(z)) |>
     geom_line(linewidth = 1) +
     scale_x_continuous(breaks = 0:3*1000)
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/main/z-p_alates.pdf")) {
     save_plot("_plots/main/z-p_alates.pdf", z_pa_curve + illustrator_theme,
               width = 2, height = 2)
 }
@@ -453,7 +452,7 @@ weak_strong_hist_list <- levels(wasp_resp_fct) |>
 # -------------------------------------*
 
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/supp/extremes-disease-outcomes.pdf")) {
     .p <- c(weak_strong_bar_list, weak_strong_hist_list) |>
         wrap_plots(design = "A#B\n###\nC#D", widths = c(1, 0.1, 1),
                    heights = c(1, 0.2, 1), guides = "collect",
@@ -542,7 +541,7 @@ ninf_weak_strong_hist_list <- levels(wasp_resp_fct) |>
 # wrap_plots(ninf_weak_strong_hist_list, nrow = 1, guides = "collect", axis_titles = "collect")
 
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/main/extremes/disease-n_infected.pdf")) {
     .p <- ninf_weak_strong_hist_list |>
         wrap_plots(design = "A#B", widths = c(1, 0.1, 1),
                    guides = "collect", axis_titles = "collect") &
@@ -678,7 +677,7 @@ dd_disp_p <- dd_disp_sims |>
 
 # dd_disp_p
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/supp/dens-dep-dispersal.pdf")) {
     save_plot("_plots/supp/dens-dep-dispersal.pdf", dd_disp_p, width = 6, height = 7)
 }
 

@@ -12,9 +12,8 @@
 │   │   ├── disease-n_infected.pdf
 │   │   └── timeseries.pdf
 │   ├── extremes-manip-lines-pseudo_surv.pdf
-│   ├── large-baselines.pdf
 │   ├── large-outcomes.pdf
-    ├── large-zeta-n_infected.pdf
+│   ├── large-zeta-n_infected.pdf
 │   ├── lines-zeta.pdf
 │   └── z-p_alates.pdf
 ├── README.md
@@ -27,6 +26,7 @@
     ├── extremes-manip-thresholds.pdf
     ├── extremes-manip-Y0-N0-heatmaps.pdf
     ├── large-baseline-wt_pp.pdf
+    ├── large-baselines.pdf
     ├── large-empirical-zeta.pdf
     ├── large-manips-interior.pdf
     ├── large-outcomes-small-outbreaks.pdf
@@ -44,6 +44,11 @@ The main text figures are bare bones (e.g., no axis titles) because they were
 imported into Illustrator for the final versions.
 No changes were made to the panels themselves in Illustrator.
 
+Plotting scripts only save a figure if it does not already exist,
+unless `.overwrite <- TRUE` is set near the top of the script
+(see `_scripts/README.md`).
+Folders are created as needed by the scripts.
+
 
 
 ## File descriptions:
@@ -52,11 +57,11 @@ No changes were made to the panels themselves in Illustrator.
     - `densities-large.pdf`: landscape-wide densities through time 
       for total aphids, alates, and parasitoids for large landscapes
       and across occupancies of *Pseudomonas*
-      (created in `_scripts/03-large/01b-large-results.R`)
-    - `disease-n_infected.pdf`: frequencies of the numbers of peak infected
+      (created in `_scripts/03-large/02-large-densities-plots.R`)
+    - `extremes/disease-n_infected.pdf`: frequencies of the numbers of peak infected
       plants by *Pseudomonas* presence in small landscapes
       (created in `_scripts/01-small/01-extremes.R`)
-    - `timeseries.pdf`: densities of total aphids, alates, parasitoids, and
+    - `extremes/timeseries.pdf`: densities of total aphids, alates, parasitoids, and
       infected plants through time for small landscapes and with or without
       *Pseudomonas* (created in `_scripts/01-small/01-extremes.R`)
     - `extremes-manip-lines-pseudo_surv.pdf`: number of peak infected plants 
@@ -109,7 +114,8 @@ No changes were made to the panels themselves in Illustrator.
       and numbers of peak infected plants
       (created in `_scripts/01-small/02b-extremes-manip.R`)
     - `large-baseline-wt_pp.pdf`: numbers of peak infected plants versus
-      *Pseudomonas* occupancy when *Pseudomonas* locations are clustered
+      *Pseudomonas* occupancy for uniform and clustered *Pseudomonas*
+      locations, across alate flight radii (`r_fly`)
       (created in `_scripts/03-large/01b-large-results.R`)
     - `large-baselines.pdf`: number of peak infected plants in large landscapes 
       across occupancies of *Pseudomonas* and across whether 

@@ -21,6 +21,13 @@ interm_files <- list(extreme_manip = "extremes-manip-sims.rds",
                      large_zeta_ninf = "large-zeta-ninf-summs.csv") |>
     map(\(x) paste0("_scripts/interm-data/", x))
 
+# Create output directories that are not tracked by git:
+for (.d in c("_plots/main/extremes", "_plots/supp",
+            paste0("_scripts/interm-data/large-", c("main", "interior", "r_fly")))) {
+    if (!dir.exists(.d)) dir.create(.d, recursive = TRUE)
+}
+rm(.d)
+
 
 
 # Set threads for simulations:

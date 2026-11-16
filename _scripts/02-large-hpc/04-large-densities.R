@@ -3,14 +3,23 @@
 #' Density plots for larger landscape simulations.
 #' Do NOT run this locally!
 #'
-#' Instead run on cluster using an interactive job:
-#' cd /home2/$USER/03-large-densities
+#' Instead, move it to the cluster (from `~/GitHub/Cornell/aeonia/_scripts`):
+#' # cluster username, from the `User` line for host `biohpc` in ~/.ssh/config:
+#' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+#' ssh biohpc 'mkdir -p /home2/$USER/04-large-densities'
+#' scp ./02-large-hpc/04-large-densities.R biohpc:/home2/${BIOHPC_USER}/04-large-densities/
+#'
+#' Then run it on the cluster using an interactive job:
+#' cd /home2/$USER/04-large-densities
 #' srun -N 1 -n 1 -c 50 --mem=200G --time=20:00:00 --job-name="lp-dens" --pty R --vanilla
+#' # (inside R:)
+#' source("04-large-densities.R")
 #'
 #' Then, when the jobs are done (assuming you're back on your desktop in
 #' directory `~/GitHub/Cornell/aeonia/_scripts`):
 #'
-#' export RDS_DIR="/home2/$USER/03-large-densities"
+#' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+#' export RDS_DIR="/home2/${BIOHPC_USER}/04-large-densities"
 #' scp biohpc:${RDS_DIR}/density-sims.csv \
 #'     ./interm-data/
 

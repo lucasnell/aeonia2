@@ -1,7 +1,14 @@
 Package: aeonia
 Title: Alate Effects On Nonpersistent Infection Advancement
-Version: 0.0.2.3
-Description: What the package does (one paragraph).
+Version: 0.0.2.4
+Description: Simulates aphid--parasitoid population dynamics and the spread of a
+    nonpersistently transmitted, aphid-borne plant virus on grids of plants,
+    some of which are inhabited by Pseudomonas bacteria that reduce aphid
+    survival. Aphid (apterous and alate) and parasitoid wasp populations are
+    tracked on each plant, alates disperse among plants, and alates acquire
+    and inoculate the virus as they move. Simulations can be run on small (3
+    x 3) or large (100 x 100) landscapes, and the package also simulates
+    spatial arrangements of virus-infected and Pseudomonas-inhabited plants.
 Authors@R: person(c("Lucas", "A."), "Nell", email = "lucnell@gmail.com",
                   role = c("cph", "aut", "cre"),
                   comment = c(ORCID = "0000-0003-3209-0517"))

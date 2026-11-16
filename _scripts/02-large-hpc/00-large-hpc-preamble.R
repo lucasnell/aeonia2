@@ -4,8 +4,10 @@
 
 #' I moved this script over to bioHPC using the following:
 #'
-#' cd ~/GitHub/Cornell/aeonia/_scripts \
-#'     && scp ./02-large-hpc/00-large-hpc-preamble.R biohpc:/home2/$USER/
+#' cd ~/GitHub/Cornell/aeonia/_scripts
+#' # cluster username, from the `User` line for host `biohpc` in ~/.ssh/config:
+#' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+#' scp ./02-large-hpc/00-large-hpc-preamble.R biohpc:/home2/${BIOHPC_USER}/
 #'
 
 

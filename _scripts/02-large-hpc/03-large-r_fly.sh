@@ -18,8 +18,10 @@
 # I first moved this script and the preamble over to bioHPC using the following:
 #
 # cd ~/GitHub/Cornell/aeonia/_scripts
+# # cluster username, from the `User` line for host `biohpc` in ~/.ssh/config:
+# BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
 # ssh biohpc 'mkdir -p /home2/$USER/03-large-r_fly && mkdir -p /home2/$USER/03-large-r_fly/logs'
-# scp ./02-large-hpc/03-large-r_fly.sh biohpc:/home2/$USER/03-large-r_fly/
+# scp ./02-large-hpc/03-large-r_fly.sh biohpc:/home2/${BIOHPC_USER}/03-large-r_fly/
 #
 # This was then run on BioHPC in a non-interactive batch job started with the following:
 #
@@ -29,7 +31,9 @@
 # Then, when the jobs are done (assuming you're back on your desktop in
 # directory `~/GitHub/Cornell/aeonia/_scripts`):
 #
-# scp biohpc:/home2/$USER/03-large-r_fly/large-r_fly*.rds ./interm-data/large-r_fly/
+# BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+# mkdir -p ./interm-data/large-r_fly
+# scp biohpc:/home2/${BIOHPC_USER}/03-large-r_fly/large-r_fly*.rds ./interm-data/large-r_fly/
 #
 #
 

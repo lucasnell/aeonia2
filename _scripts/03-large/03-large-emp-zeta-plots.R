@@ -12,7 +12,7 @@ source("_scripts/00-preamble.R")
 
 # In Ives et al. (1999), they found that parasitoids spent ~3.76 more time
 # foraging at plants where they encountered an aphid.
-# Bestrong simulates our model with varying zeta, then compares the observed
+# Below simulates our model with varying zeta, then compares the observed
 # wasp abundances to those predicted when parasitoids never encounter an aphid
 # on a Pseudomonas-inhabited plant but always do on plants without Pseudomonas.
 if (!all(file.exists(c(interm_files$large_zeta, interm_files$large_zeta_ninf,
@@ -94,7 +94,7 @@ zeta_p <- zeta_sim_summs |>
 
 # zeta_p
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/supp/large-empirical-zeta.pdf")) {
     save_plot("_plots/supp/large-empirical-zeta.pdf", zeta_p, width = 6, height = 5)
 }
 
@@ -140,7 +140,7 @@ zeta_ninf_p <- zeta_ninf_sim_summs |>
 
 
 
-if (.overwrite) {
+if (.overwrite || !file.exists("_plots/main/large-zeta-n_infected.pdf")) {
     save_plot("_plots/main/large-zeta-n_infected.pdf",
               zeta_ninf_p + illustrator_theme, width = 4.88, height = 2)
 }

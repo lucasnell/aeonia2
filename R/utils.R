@@ -110,6 +110,7 @@ err_msg <- function(par, ...) {
 #'
 #' @param filename Filename of plot. Extension should be `".pdf"`, `".svg"`, or `".png"`
 #'     and will determine what type of plot is created.
+#'     Missing parent directories are created.
 #' @param plot Plot object or function to create plot
 #' @param width Width in inches
 #' @param height Height in inches
@@ -140,7 +141,7 @@ save_plot <- function(filename,
         stop("ERROR: file name extension must be \".pdf\", \".svg\", or \".png\"")
     }
     fn_dir <- dirname(filename)
-    if (!dir.exists(fn_dir)) stop("ERROR: `", fn_dir, "` doesn't exist")
+    if (!dir.exists(fn_dir)) dir.create(fn_dir, recursive = TRUE)
     if (!is.null(seed)) set.seed(seed)
     if (ext == "pdf") {
         cairo_pdf(filename = filename, width = width, height = height, bg = bg, ...)
