@@ -70,12 +70,6 @@ Must be \verb{>= 1}.
 Defaults to \code{7}, which is based on the paper "Cucumber mosaic virus
 isolates seedborne in \emph{Phaseolus vulgaris}: serology, host-pathogen
 relationships, and seed transmission" (Davis & Hampton, 1986).}
-
-\item{n_x}{Single integer indicating x dimension of the landscape.
-Must be at least \code{2} and less than \code{1e6}.}
-
-\item{n_y}{Single integer indicating y dimension of the landscape.
-Must be at least \code{2} and less than \code{1e6}.}
 }
 \value{
 An \code{externalptr} object that points to a C++ object that can

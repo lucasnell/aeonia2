@@ -86,8 +86,9 @@ off plants each day. Defaults to \code{0.1}.}
 
 \item{distr_0}{A 2-column matrix indicating the starting stage distribution.
 (The total abundance of aphids is adjusted in the simulation function.)
-If \code{NULL}, there will be no starting alates and apterous densities
-will follow the stable age distribution.
+If \code{NULL}, apterous densities follow the stable age distribution of
+the apterous Leslie matrix, and any starting alates (\code{W0 > 0} in
+simulation functions) follow that of the alate Leslie matrix.
 If a matrix, it must have 5 rows (rows indicate instar)
 or a row per aphid age (rows indicate age in days).
 Matrix column indicates apterous vs alate.
@@ -181,7 +182,7 @@ This argument has no effect (is changed to \code{0}) if
 Defaults to the internal object \code{an_environ$sigma_y},
 which is from Meisner et al. (2014).}
 
-\item{mum_smooth}{Proportion of mummies that will NOT take exactly 3 days
+\item{mummy_smooth}{Proportion of mummies that will NOT take exactly 3 days
 to develop. As this value approaches 2/3, it will provide greater
 smoothing of wasp numbers through time.
 Defaults to \code{0.4}.}

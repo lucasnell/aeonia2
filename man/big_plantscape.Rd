@@ -26,6 +26,9 @@ big_plantscape(
 )
 }
 \arguments{
+\item{n_sims}{Single integer giving the number of simulations to run.
+Must be \verb{>= 1}.}
+
 \item{landscape}{Integer 100 x 100 matrix,
 100 x 100 x \code{n_sims} array, or 100 x 100 x \code{n_sims} array.
 It should contain the types of each plant in each landscape.
@@ -70,6 +73,10 @@ aphids per plant that is the same across repetitions.
 If a 3D array, it must be 100 x 100 x \code{n_sims} and gives the abundance of
 non-winged aphids per plant across repetitions.}
 
+\item{sd_N}{Single numeric giving the standard deviation for the lognormal
+distribution used to generate non-winged aphid densities per patch.
+Must be \verb{>= 0}.}
+
 \item{Y0}{Numeric vector indicating the starting parasitoid population
 density for each rep.
 The vector can also be of length 1, in which case it's assumed that
@@ -81,14 +88,28 @@ If a numeric matrix, it must be 100 x 100 and gives the abundance of winged
 aphids per plant that is the same across repetitions.
 If a 3D array, it must be 100 x 100 x \code{n_sims} and gives the abundance of
 winged aphids per plant across repetitions.
+Defaults to \code{0}.
+Alates are spread across ages using the alate column of \code{distr_0}
+in \code{\link[=make_insects_ptr]{make_insects_ptr()}}, or the stable age distribution of the alate
+Leslie matrix if that column is all zeros (the default).}
+
+\item{sd_W}{Single numeric giving the standard deviation for the lognormal
+distribution used to generate winged aphid densities per patch.
+Must be \verb{>= 0}.
 Defaults to \code{0}.}
 
-\item{M0}{Numeric 3D array indicating the starting mummy population
-density for each plant and rep.
-To indicate separate densities for each plant and/or rep,
-the array should have the same dimensions as \code{landscapes}.
-The array can also be 1x1, in which case it's assumed that all plants
-and reps start with the same density of mummies.}
+\item{M0}{If a single numeric, it gives the mean for the lognormal
+distribution used to generate mummy densities per patch.
+If a numeric matrix, it must be 100 x 100 and gives the abundance of
+mummies per plant that is the same across repetitions.
+If a 3D array, it must be 100 x 100 x \code{n_sims} and gives the abundance of
+mummies per plant across repetitions.
+Defaults to \code{0}.}
+
+\item{sd_M}{Single numeric giving the standard deviation for the lognormal
+distribution used to generate mummy densities per patch.
+Must be \verb{>= 0}.
+Defaults to \code{0}.}
 
 \item{radius}{Max distance that alates will travel between plants.
 Must be >= 1.

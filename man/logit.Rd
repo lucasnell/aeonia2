@@ -9,6 +9,14 @@ logit(p)
 
 inv_logit(a)
 }
+\arguments{
+\item{p}{Numeric vector of probabilities (between 0 and 1).}
+
+\item{a}{Numeric vector on the logit scale.}
+}
+\value{
+A numeric vector the same length as the input.
+}
 \description{
 Logit and inverse logit functions.
 }

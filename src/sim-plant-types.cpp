@@ -24,9 +24,10 @@ using namespace Rcpp;
 //' Weight values above 1 cause neighboring locations to be more likely to be
 //' sampled later, while values below 1 cause them to be less likely
 //' sampled.
-//' These weights apply to all plants directly next to the plant of a given
-//' type, and they accrue multiplicatively.
-//' For example, if `wt_vp = 2` and *Pseudomonas* was place on a plant at
+//' These weights apply to the plant of a given type and all plants
+//' directly next to it (including diagonally), and they accrue
+//' multiplicatively.
+//' For example, if `wt_pv = 2` and *Pseudomonas* was placed on a plant at
 //' location `1,1` (x,y), then plants at locations `1,1`; `1,2`; `2,2`; and `2,1`
 //' would all be twice as likely to be sampled as a location for a virus to be
 //' placed later on.
@@ -58,10 +59,24 @@ using namespace Rcpp;
 //'     See section "Weighting" above for how these weights work.
 //'     Must be >= 0. Defaults to `1`.
 //' @param n_virus Single integer indicating the number of plants that should
-//'     be virus infected. This value must be `>=1` and `<= n_x * n_y`.
+//'     be virus infected. This value must be `>= 0` and `<= n_x * n_y`,
+//'     and `n_virus + n_pseudo` must be `>= 1`.
 //' @param n_pseudo Single integer indicating the number of plants that should
 //'     be *Pseudomonas* infected.
-//'     This value must be `>=1` and `<= n_x * n_y`.
+//'     This value must be `>= 0` and `<= n_x * n_y`,
+//'     and `n_virus + n_pseudo` must be `>= 1`.
+//' @param virus_starts Optional integer matrix with two columns (x and y)
+//'     giving locations of virus-infected plants that are the same in every
+//'     landscape. Coordinates start at `1`.
+//'     Must have `<= n_virus` rows; remaining virus-infected plants are
+//'     placed randomly.
+//'     These plants are placed before all randomly placed plants, so they
+//'     affect later placements through the `wt_*` weights.
+//'     Defaults to `NULL`.
+//' @param pseudo_starts Optional integer matrix like `virus_starts`, but for
+//'     *Pseudomonas*-inhabited plants (placed after `virus_starts`).
+//'     Must have `<= n_pseudo` rows.
+//'     Defaults to `NULL`.
 //' @param n_lands Single integer indicating the number of independent
 //'     landscapes to simulate. Each landscape will have a number of samples
 //'     per type according to `n_virus` and `n_pseudo`.

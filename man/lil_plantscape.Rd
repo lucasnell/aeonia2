@@ -62,7 +62,10 @@ If a numeric matrix, it must be 3x3 and gives the abundance of winged
 aphids per plant that is the same across repetitions.
 If a 3D array, it must be 3x3x\code{n_sims} and gives the abundance of
 winged aphids per plant across repetitions.
-Defaults to \code{0}.}
+Defaults to \code{0}.
+Alates are spread across ages using the alate column of \code{distr_0}
+in \code{\link[=make_insects_ptr]{make_insects_ptr()}}, or the stable age distribution of the alate
+Leslie matrix if that column is all zeros (the default).}
 
 \item{sd_W}{Single numeric giving the standard deviation for the lognormal
 distribution used to generate winged aphid densities per patch.

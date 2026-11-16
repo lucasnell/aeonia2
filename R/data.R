@@ -3,7 +3,7 @@
 
 #' Development times for aphids and wasps.
 #'
-#' See `vignette("internals", "aeonia")` for the exact values here.
+#' Print the object to see the values used.
 #'
 #'
 #' @format A list with two items:
@@ -21,8 +21,7 @@
 
 #' Population rates and starting values for aphids and wasps.
 #'
-#' See `vignette("internals", "aeonia")` for more information and
-#' for the exact values used.
+#' Print the object to see the values used.
 #'
 #'
 #' @format A list with ten items:
@@ -66,8 +65,7 @@
 
 #' Wasp attack rate parameters.
 #'
-#' See `vignette("internals", "aeonia")` for more information and
-#' for the exact values used.
+#' Print the object to see the values used.
 #'
 #'
 #' @format A list with five items:
@@ -101,8 +99,7 @@
 
 #' Parameters associated with environmental effects and stochasticity.
 #'
-#' See `vignette("internals", "aeonia")` for more information and
-#' for the exact values used.
+#' Print the object to see the values used.
 #'
 #'
 #' @format A list of length 9:

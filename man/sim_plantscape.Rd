@@ -56,7 +56,10 @@ density for each plant and rep.
 To indicate separate densities for each plant and/or rep,
 the array should have the same dimensions as \code{landscapes}.
 The array can also be 1x1, in which case it's assumed that all plants
-and reps start with the same density of winged aphids.}
+and reps start with the same density of winged aphids.
+Alates are spread across ages using the alate column of \code{distr_0}
+in \code{\link[=make_insects_ptr]{make_insects_ptr()}}, or the stable age distribution of the alate
+Leslie matrix if that column is all zeros (the default).}
 
 \item{M0}{Numeric 3D array indicating the starting mummy population
 density for each plant and rep.

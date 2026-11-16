@@ -182,6 +182,12 @@ void AphidPop::refresh_abunds(double N0, double W0) {
 
     if (W0 > 0) {
         X_0_sum = arma::accu(alates.X_0_);
+        // If no starting alate distribution was provided, use the stable
+        // age distribution of the alate Leslie matrix:
+        if (X_0_sum <= 0) {
+            sad_leslie__(alates.leslie_, alates.X_0_);
+            X_0_sum = arma::accu(alates.X_0_);
+        }
         if (X_0_sum <= 0) stop("alates X_0 sums to <= 0");
         if (X_0_sum != 1) W0 /= X_0_sum;
         alates.X_0_ *= W0;

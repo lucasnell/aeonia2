@@ -135,6 +135,9 @@ make_lil_lands <- function(n_x, n_y, n_sims, n_pseudo, spat_config) {
 #'     If a 3D array, it must be 3x3x`n_sims` and gives the abundance of
 #'     winged aphids per plant across repetitions.
 #'     Defaults to `0`.
+#'     Alates are spread across ages using the alate column of `distr_0`
+#'     in [make_insects_ptr()], or the stable age distribution of the alate
+#'     Leslie matrix if that column is all zeros (the default).
 #' @param sd_W Single numeric giving the standard deviation for the lognormal
 #'     distribution used to generate winged aphid densities per patch.
 #'     Must be `>= 0`.

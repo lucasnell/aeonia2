@@ -75,3 +75,17 @@ test_that("lil_plantscape() checks n_pseudo against spat_config (A3)", {
     expect_no_error(lil(n_sims = 2, n_pseudo = 5, spat_config = "random"))
     expect_no_error(lil(n_sims = 2, n_pseudo = 5, spat_config = "no virus"))
 })
+
+test_that("starting alates work with the default distr_0 (A3)", {
+    # Previously failed with "alates X_0 sums to <= 0".
+    set.seed(50)
+    out <- lil(n_sims = 2, n_pseudo = 0, W0 = 7, summ = "none",
+               out_stages = "all", max_t = 2L)
+    first <- out[!is.na(out$x) & out$time == 1, ]
+    alate_cols <- grep("^alates_", names(first), value = TRUE)
+    expect_equal(rowSums(first[alate_cols]), rep(7, nrow(first)),
+                 tolerance = 1e-10)
+    expect_true(all(unlist(first[alate_cols]) >= 0))
+    ip <- make_insects_ptr(pseudo_surv = 1, zeta = 0)
+    expect_no_error(test_insect_pops(5, N0 = 10, W0 = 5, M0 = 0, Y0 = 0, ip))
+})

@@ -33,6 +33,10 @@ If \code{"two"}, adult and juvenile alates and apterous aphids are separated.
 If \code{"all"}, every age stage is separated, typically \code{29} each for
 aphids and alates.
 Defaults to \code{"none"}.}
+
+\item{n_age_stages}{Single integer giving the number of age stages for
+each aphid type (apterous or alate); only used when
+\code{out_stages = "all"}. Defaults to \code{29}.}
 }
 \description{
 Just create column names, for use in R.

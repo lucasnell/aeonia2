@@ -15,6 +15,9 @@ using namespace Rcpp;
 
 //' Logit and inverse logit functions.
 //'
+//' @param p Numeric vector of probabilities (between 0 and 1).
+//'
+//' @return A numeric vector the same length as the input.
 //'
 //' @export
 //'
@@ -27,6 +30,8 @@ NumericVector logit(NumericVector p) {
     return out;
 }
 //' @rdname logit
+//'
+//' @param a Numeric vector on the logit scale.
 //'
 //' @export
 //'

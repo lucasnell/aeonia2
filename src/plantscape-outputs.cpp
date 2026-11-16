@@ -132,6 +132,9 @@ CharacterVector col_namer_cpp(const ScapeSimmer& simmer,
 //' Just create column names, for use in R.
 //'
 //' @inheritParams sim_plantscape
+//' @param n_age_stages Single integer giving the number of age stages for
+//'     each aphid type (apterous or alate); only used when
+//'     `out_stages = "all"`. Defaults to `29`.
 //'
 //' @export
 //'

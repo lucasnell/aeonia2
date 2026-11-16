@@ -30,11 +30,13 @@ Locations will be drawn from \code{1} to \code{n_y}.
 Must be at least \code{2} and less than \code{1e6}.}
 
 \item{n_virus}{Single integer indicating the number of plants that should
-be virus infected. This value must be \verb{>=1} and \verb{<= n_x * n_y}.}
+be virus infected. This value must be \verb{>= 0} and \verb{<= n_x * n_y},
+and \code{n_virus + n_pseudo} must be \verb{>= 1}.}
 
 \item{n_pseudo}{Single integer indicating the number of plants that should
 be \emph{Pseudomonas} infected.
-This value must be \verb{>=1} and \verb{<= n_x * n_y}.}
+This value must be \verb{>= 0} and \verb{<= n_x * n_y},
+and \code{n_virus + n_pseudo} must be \verb{>= 1}.}
 
 \item{wt_vp}{A single number indicating how virus placement
 affects subsequent placement of \emph{Pseudomonas}.
@@ -61,6 +63,20 @@ landscapes to simulate. Each landscape will have a number of samples
 per type according to \code{n_virus} and \code{n_pseudo}.
 Must be \verb{> 0} and \verb{< 1e6}.
 Defaults to \code{1}.}
+
+\item{virus_starts}{Optional integer matrix with two columns (x and y)
+giving locations of virus-infected plants that are the same in every
+landscape. Coordinates start at \code{1}.
+Must have \verb{<= n_virus} rows; remaining virus-infected plants are
+placed randomly.
+These plants are placed before all randomly placed plants, so they
+affect later placements through the \verb{wt_*} weights.
+Defaults to \code{NULL}.}
+
+\item{pseudo_starts}{Optional integer matrix like \code{virus_starts}, but for
+\emph{Pseudomonas}-inhabited plants (placed after \code{virus_starts}).
+Must have \verb{<= n_pseudo} rows.
+Defaults to \code{NULL}.}
 
 \item{show_progress}{Single logical for whether to show progress bar.
 Defaults to \code{FALSE}.}
@@ -98,9 +114,10 @@ affects the sampling weight of subsequent plants of different types.
 Weight values above 1 cause neighboring locations to be more likely to be
 sampled later, while values below 1 cause them to be less likely
 sampled.
-These weights apply to all plants directly next to the plant of a given
-type, and they accrue multiplicatively.
-For example, if \code{wt_vp = 2} and \emph{Pseudomonas} was place on a plant at
+These weights apply to the plant of a given type and all plants
+directly next to it (including diagonally), and they accrue
+multiplicatively.
+For example, if \code{wt_pv = 2} and \emph{Pseudomonas} was placed on a plant at
 location \verb{1,1} (x,y), then plants at locations \verb{1,1}; \verb{1,2}; \verb{2,2}; and \verb{2,1}
 would all be twice as likely to be sampled as a location for a virus to be
 placed later on.

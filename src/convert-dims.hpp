@@ -108,8 +108,8 @@ public:
      */
     void nextdoor_neighbors(std::vector<uint32>& indices,
                             const uint32& k) {
-        uint32 x0 = k - n_y * (k / n_y);
-        uint32 y0 = k / n_y;
+        uint32 x0 = k - n_x * (k / n_x);
+        uint32 y0 = k / n_x;
         indices.clear();
         neigh_x.clear();
         neigh_y.clear();
@@ -118,7 +118,7 @@ public:
         if (x0 < n_x-1) neigh_x.push_back(x0+1);
         if (y0 > 0) neigh_y.push_back(y0-1);
         neigh_y.push_back(y0);
-        if (y0 < n_x-1) neigh_y.push_back(y0+1);
+        if (y0 < n_y-1) neigh_y.push_back(y0+1);
         uint32 k_out;
         for (const uint32& x : neigh_x) {
             for (const uint32& y : neigh_y) {

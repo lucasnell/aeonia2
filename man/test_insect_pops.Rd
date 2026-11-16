@@ -9,33 +9,28 @@ test_insect_pops(max_t, N0, W0, M0, Y0, insects_ptr)
 \arguments{
 \item{max_t}{Single integer giving the maximum time the simulations run.}
 
-\item{N0}{Numeric 3D array indicating the starting aphid (non-winged) population
-density for each plant and rep.
-To indicate separate densities for each plant and/or rep,
-the array should have the same dimensions as \code{landscapes}.
-The array can also be 1x1, in which case it's assumed that all plants
-and reps start with the same density of aphids.
-Values must be \verb{>= 0}, and each landscape must have at least one
-plant with a value \verb{> 0}.}
+\item{N0}{Single number giving the starting density of non-winged aphids.
+It is spread across ages by the stable age distribution unless
+\code{distr_0} is set in \code{\link[=make_insects_ptr]{make_insects_ptr()}}.}
 
-\item{W0}{Numeric 3D array indicating the starting winged aphid population
-density for each plant and rep.
-To indicate separate densities for each plant and/or rep,
-the array should have the same dimensions as \code{landscapes}.
-The array can also be 1x1, in which case it's assumed that all plants
-and reps start with the same density of winged aphids.}
+\item{W0}{Single number giving the starting density of winged aphids.
+Alates are spread across ages using the alate column of \code{distr_0}
+in \code{\link[=make_insects_ptr]{make_insects_ptr()}}, or the stable age distribution of the alate
+Leslie matrix if that column is all zeros (the default).}
 
-\item{M0}{Numeric 3D array indicating the starting mummy population
-density for each plant and rep.
-To indicate separate densities for each plant and/or rep,
-the array should have the same dimensions as \code{landscapes}.
-The array can also be 1x1, in which case it's assumed that all plants
-and reps start with the same density of mummies.}
+\item{M0}{Single number giving the starting density of mummies,
+spread evenly across mummy ages.}
 
-\item{Y0}{Numeric vector indicating the starting parasitoid population
-density for each rep.
-The vector can also be of length 1, in which case it's assumed that
-all reps start with the same density of parasitoids.}
+\item{Y0}{Single number giving the starting density of adult female
+parasitoids.}
+
+\item{insects_ptr}{External pointer to a C++ object with insect population
+information, output from function \code{\link[=make_insects_ptr]{make_insects_ptr()}}.}
+}
+\value{
+A tibble with one row per day (starting with the initial
+conditions at time \code{0}) and columns \code{time}, \code{aphids} (non-winged),
+\code{alates}, \code{parasitized}, \code{mummies}, and \code{wasps}.
 }
 \description{
 This function is just for one plant, so alates never leave the plant

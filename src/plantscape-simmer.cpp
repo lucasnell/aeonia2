@@ -158,10 +158,6 @@ void ScapeSimmer::fill_output() {
 //'
 //' For smaller landscapes (e.g., 3x3), I use `radius = 1`.
 //'
-//' @param n_x Single integer indicating x dimension of the landscape.
-//'     Must be at least `2` and less than `1e6`.
-//' @param n_y Single integer indicating y dimension of the landscape.
-//'     Must be at least `2` and less than `1e6`.
 //' @param radius Max distance that alates will travel between plants.
 //'     Must be >= 1.
 //'     See "Radius" section below for details.
@@ -502,6 +498,9 @@ void check_plantscape_args(const arma::ucube& landscapes,
 //'     the array should have the same dimensions as `landscapes`.
 //'     The array can also be 1x1, in which case it's assumed that all plants
 //'     and reps start with the same density of winged aphids.
+//'     Alates are spread across ages using the alate column of `distr_0`
+//'     in [make_insects_ptr()], or the stable age distribution of the alate
+//'     Leslie matrix if that column is all zeros (the default).
 //' @param M0 Numeric 3D array indicating the starting mummy population
 //'     density for each plant and rep.
 //'     To indicate separate densities for each plant and/or rep,

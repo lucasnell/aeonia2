@@ -1,0 +1,283 @@
+---
+title: "Overview of aeonia"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Overview of aeonia}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
+                      fig.width = 6, fig.height = 3.5)
+```
+
+```{r}
+#| label: setup
+#| message: false
+library(aeonia)
+library(ggplot2)
+```
+
+`aeonia` simulates aphid and parasitoid wasp populations on a grid of plants,
+together with the spread of a nonpersistently transmitted, aphid-borne virus.
+Some plants can be inhabited by *Pseudomonas* bacteria, which reduce aphid
+survival and can repel winged aphids (alates).
+This vignette summarizes the model, then shows the main functions:
+
+| Task | Function(s) |
+|---|---|
+| Arrange virus and *Pseudomonas* plants | `sim_plant_types()` |
+| Simulate a 3 × 3 landscape | `lil_plantscape()` |
+| Simulate a 100 × 100 landscape | `big_plantscape()` |
+| Simulate any landscape with full control | `make_insects_ptr()`, `make_disease_ptr()`, `sim_plantscape()` |
+| Single-plant dynamics and helpers | `test_insect_pops()`, `carrying_capacity()`, `alate_prop()`, `sad_leslie()` |
+
+
+# The model
+
+Time steps are days.
+Each plant has its own aphid population (apterous, alate, and parasitized
+aphids, each structured by age in days) and its own mummies
+(dead parasitized aphids with developing wasps inside).
+Adult female parasitoids form one landscape-wide population that is
+reallocated among plants every day.
+Each plant is uninfected, exposed (inoculated but not yet able to spread the
+virus), or infectious; plants never recover.
+
+## One day, in order
+
+1. **Parasitoid attack.**
+   Plant $i$ receives
+   $Y_i = Y \left[ (1-\zeta)\, a_i + \zeta\, z_i / \textstyle\sum_j z_j \right]$
+   adult female parasitoids, where $Y$ is the landscape total,
+   $a_i$ is the plant's relative attractiveness
+   (`wasp_plant_attract`; equal for all plants by default),
+   $z_i$ is the plant's total aphid density, and
+   $\zeta$ (`zeta`, from 0 to 1) is parasitoid responsiveness to aphid density.
+   If no plant has aphids, parasitoids are allocated by $a_i$ alone.
+   The probability that an aphid of a given age escapes attack follows a
+   negative binomial distribution of attacks
+   (Meisner et al. 2014, eq. 6), with attack rate, handling time, and
+   aggregation from `an_wasp_attack`.
+   Adult alates are not attacked.
+2. **Aphid growth.**
+   Apterous and alate aphids are projected one day with Leslie matrices
+   (age-specific survival and fecundity) and multiplied by
+   survival from *Pseudomonas* $\psi$ (`pseudo_surv`; 1 on plants without
+   *Pseudomonas*),
+   survival from predators and host-plant death $g$ (`pred_surv`),
+   density dependence $S(z) = 1 / (1 + z/K)$, and
+   survival from parasitoid attack.
+   A proportion $\textrm{logit}^{-1}(b_0 + b_1 z)$
+   (`alate_b0`, `alate_b1`; see `alate_prop()`) of apterous offspring are
+   alates; all offspring of alates are apterous.
+   Attacked aphids become parasitized, die after a fixed number of days,
+   and become mummies.
+3. **Mummies and adult parasitoids.**
+   Mummies develop for about 3 days, then a proportion `sex_ratio` emerge as
+   adult females.
+   Adult females survive each day with probability `s_y`.
+4. **Virus incubation.**
+   Exposed plants become infectious after `total_exp_days` days.
+5. **Alate flights and virus spread.**
+   Each adult alate leaves its plant with probability `fly_p`.
+   A departing alate carries the virus with probability `p_load_alate` if its
+   plant is infectious.
+   It then moves among plants: each move goes to another plant within
+   distance `radius`, chosen with weights equal to 1, multiplied by
+   `virus_attract` if the plant is infectious and divided by `pseudo_repel`
+   if it has *Pseudomonas*.
+   On each plant it lands on, an alate without virus picks it up from an
+   infectious plant with probability `p_load_alate`, and an alate with
+   virus inoculates an uninfected, unexposed plant with probability
+   `p_load_plant`.
+   After each move, the alate settles with probability `w`
+   (`w * epsilon` on infectious plants) and joins that plant's
+   aphid population; otherwise it moves again.
+
+Departures, flights, and transmission are random.
+Population dynamics are deterministic unless `demog_error` or
+`environ_error` is `TRUE` in `make_insects_ptr()`.
+
+## Default parameter values
+
+Default values come from the data objects `an_populations`,
+`an_dev_times`, `an_wasp_attack`, and `an_environ`; see their help pages for
+sources.
+For example:
+
+```{r}
+#| label: defaults
+an_populations[c("K", "s_y", "sex_ratio")]
+an_wasp_attack[c("a", "k", "h")]
+an_environ$radius  # default alate flight radius for large landscapes
+```
+
+
+# Arranging plants
+
+`sim_plant_types()` places virus-infected and *Pseudomonas*-inhabited plants
+on a grid.
+Each cell of the result is coded
+`0` (neither), `1` (virus), `2` (*Pseudomonas*), or `3` (both).
+The `wt_*` arguments change how placing one plant type affects where later
+plants are placed nearby; for example, `wt_pp > 1` clusters
+*Pseudomonas* plants and `wt_vp` near 0 keeps them away from the virus.
+
+```{r}
+#| label: plant-types
+#| fig.height: 3
+set.seed(1)
+arrange_plants <- function(wt_pp) {
+    sim_plant_types(n_x = 40, n_y = 40, n_virus = 1, n_pseudo = 300,
+                    wt_pp = wt_pp, virus_starts = cbind(1, 1))
+}
+plot_df <- rbind(
+    data.frame(expand.grid(x = 1:40, y = 1:40), type = c(arrange_plants(1)),
+               arrangement = "uniform (wt_pp = 1)"),
+    data.frame(expand.grid(x = 1:40, y = 1:40), type = c(arrange_plants(3)),
+               arrangement = "clustered (wt_pp = 3)"))
+plot_df$type <- factor(plot_df$type, levels = 0:3,
+                       labels = c("neither", "virus", "Pseudomonas", "both"))
+plot_df$arrangement <- factor(plot_df$arrangement,
+                              levels = unique(plot_df$arrangement))
+ggplot(plot_df, aes(x, y, fill = type)) +
+    geom_raster() +
+    facet_wrap(~ arrangement) +
+    scale_fill_manual(values = c(neither = "grey90", virus = "firebrick",
+                                 Pseudomonas = "dodgerblue",
+                                 both = "purple")) +
+    coord_equal() +
+    theme_void()
+```
+
+
+# Small landscapes
+
+`lil_plantscape()` simulates 3 × 3 landscapes in which the virus starts on
+the plant at (1, 1).
+`spat_config` sets where *Pseudomonas* plants go: `"random"`, `"no virus"`
+(random but never on the virus plant), or one of four fixed layouts with
+exactly 3 *Pseudomonas* plants (`"diagonal"`, `"near virus"`, `"far virus"`,
+`"over virus"`; see `?lil_plantscape`).
+Fixed layouts also accept `n_pseudo = 0`.
+
+```{r}
+#| label: lil
+set.seed(2)
+lil <- lapply(c(0, 3), \(np) {
+    lil_plantscape(n_sims = 200, n_pseudo = np, spat_config = "diagonal",
+                   pseudo_surv = 0.85, zeta = 0.9, N0 = 55, sd_N = 0, Y0 = 1,
+                   summ = "all")
+})
+sapply(lil, \(d) c(mean_peak_infected = mean(d$n_infected),
+                   p_spread = mean(d$n_infected > 1)))
+```
+
+Columns `1` and `2` are without and with *Pseudomonas*.
+
+
+# Large landscapes
+
+`big_plantscape()` simulates 100 × 100 landscapes supplied by the user
+(usually from `sim_plant_types()`).
+Its `summ` argument defaults to `"none"`, which returns one row per plant,
+day, and simulation; that is about a million rows per simulation for the
+default 100 days.
+Use `summ = "time"` or `summ = "all"` unless you need output by plant.
+
+```{r}
+#| label: big
+set.seed(3)
+land <- sim_plant_types(100, 100, n_virus = 1, n_pseudo = 3000, n_lands = 2,
+                        virus_starts = cbind(1, 1))
+big <- big_plantscape(n_sims = 2, landscape = land, virus_attract = 1,
+                      pseudo_repel = 1, pseudo_surv = 0.85, zeta = 0.1,
+                      N0 = 55, sd_N = 0, Y0 = 250, summ = "time")
+ggplot(big, aes(time, virus, group = rep)) +
+    geom_line() +
+    labs(x = "Day", y = "Infectious plants")
+```
+
+
+# Output
+
+`summ` controls how output is summarized
+(full column lists are in `?sim_plantscape`):
+
+- `"none"`: one row per plant, day, and simulation, plus one row per day and
+  simulation with totals across plants (`x` and `y` are `NA`).
+- `"time"`: one row per day and simulation, with totals across plants.
+- `"all"`: one row per simulation, with means across days
+  (for example, `aphids` and `log_aphids`) and the peak number of infectious
+  plants (`n_infected`).
+
+Other `out_*` arguments add *Pseudomonas* status, survival from parasitoid
+attack, aphid ages, and alate movements (`out_dispersals`).
+
+
+# Changing other parameters
+
+`lil_plantscape()` and `big_plantscape()` pass extra named arguments through
+`...` to `make_insects_ptr()`, `make_disease_ptr()`, and `sim_plantscape()`.
+For example, this turns off alate departures, so the virus cannot spread:
+
+```{r}
+#| label: dots
+set.seed(4)
+no_fly <- lil_plantscape(n_sims = 50, n_pseudo = 0, pseudo_surv = 0.85,
+                         zeta = 0.9, N0 = 55, sd_N = 0, Y0 = 1,
+                         fly_p = 0, summ = "all")
+table(no_fly$n_infected)
+```
+
+For other landscape sizes, build the parameter objects directly and call
+`sim_plantscape()`:
+
+```{r}
+#| label: lower-level
+set.seed(5)
+land <- sim_plant_types(10, 10, n_virus = 1, n_pseudo = 20, n_lands = 5)
+out <- sim_plantscape(
+    landscapes = land,
+    N0 = array(55, c(1, 1, 1)), W0 = array(0, c(1, 1, 1)),
+    M0 = array(0, c(1, 1, 1)), Y0 = 10,
+    insect_ptr = make_insects_ptr(pseudo_surv = 0.85, zeta = 0.5),
+    disease_ptr = make_disease_ptr(radius = 2, virus_attract = 1,
+                                   pseudo_repel = 1, p_load_alate = 0.5,
+                                   p_load_plant = 0.5),
+    summ = "all")
+out[, c("rep", "aphids", "wasps", "n_infected")]
+```
+
+
+# Single-plant dynamics
+
+`test_insect_pops()` runs aphid, mummy, and parasitoid dynamics on one plant;
+alates never leave.
+Without parasitoids or alate production, aphids approach the equilibrium
+given by `carrying_capacity()`,
+$K(\lambda \psi g - 1)$, where $\lambda$ is the dominant eigenvalue of the
+apterous Leslie matrix.
+
+```{r}
+#| label: single-plant
+ip <- make_insects_ptr(pseudo_surv = 1, zeta = 0, alate_b0 = -1000)
+one <- test_insect_pops(max_t = 200, N0 = 50, W0 = 0, M0 = 0, Y0 = 0,
+                        insects_ptr = ip)
+ggplot(one, aes(time, aphids)) +
+    geom_line() +
+    geom_hline(yintercept = carrying_capacity(), linetype = 2) +
+    labs(x = "Day", y = "Apterous aphids")
+```
+
+
+# Reproducibility
+
+All random numbers are drawn from seeds taken from R's generator, so
+`set.seed()` makes results reproducible.
+Simulations run in parallel across landscapes (`n_threads`, or
+`options(mc.cores = ...)`), and results do not depend on the number of
+threads.

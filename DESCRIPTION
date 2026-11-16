@@ -1,6 +1,6 @@
 Package: aeonia
 Title: Alate Effects On Nonpersistent Infection Advancement
-Version: 0.1.0.1
+Version: 0.1.0.2
 Description: Simulates aphid--parasitoid population dynamics and the spread of a
     nonpersistently transmitted, aphid-borne plant virus on grids of plants,
     some of which are inhabited by Pseudomonas bacteria that reduce aphid
@@ -19,20 +19,18 @@ ByteCompile: true
 Depends:
     R (>= 4.1.0)
 Imports:
-    dplyr,
     ggplot2,
-    methods,
-    purrr,
     Rcpp (>= 1.0.0),
     svglite,
-    tibble,
-    tidyr
+    tibble
 LinkingTo:
     Rcpp (>= 1.0.0),
     RcppArmadillo,
     RcppThread
 Suggests:
     ggtext,
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 SystemRequirements:
     GNU make,
@@ -49,3 +47,4 @@ GithubUsername: lucasnell
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
+VignetteBuilder: knitr

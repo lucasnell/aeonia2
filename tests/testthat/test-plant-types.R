@@ -63,3 +63,20 @@ test_that("wt_pp > 1 clusters Pseudomonas plants (E1)", {
     expect_lt(abs(m_unif - 0.8), 0.15)
     expect_gt(m_clust, 1.5 * m_unif)
 })
+
+test_that("placement weights reach neighbours in non-square landscapes (B1)", {
+    # With a huge wt_pp, the second Pseudomonas plant must be next to the
+    # first one (including diagonally).
+    for (st in list(c(1, 1), c(5, 12), c(3, 7), c(1, 12), c(5, 1))) {
+        set.seed(5)
+        L <- sim_plant_types(5, 12, n_virus = 0, n_pseudo = 2, n_lands = 30,
+                             wt_pp = 1e9, pseudo_starts = rbind(st))
+        for (i in seq_len(dim(L)[3])) {
+            xy <- which(L[, , i] == 2L, arr.ind = TRUE)
+            other <- xy[!(xy[, 1] == st[1] & xy[, 2] == st[2]), , drop = FALSE]
+            expect_identical(nrow(other), 1L)
+            expect_lte(max(abs(other[1, ] - st)), 1,
+                       label = paste("start", paste(st, collapse = ",")))
+        }
+    }
+})

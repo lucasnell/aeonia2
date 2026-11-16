@@ -45,6 +45,23 @@ arma::vec get_aphid_X0(SEXP insects_ptr) {
 //' (argument `fly_p` in [make_insects_ptr()] is ignored and set to `0`).
 //'
 //' @inheritParams sim_plantscape
+//' @param N0 Single number giving the starting density of non-winged aphids.
+//'     It is spread across ages by the stable age distribution unless
+//'     `distr_0` is set in [make_insects_ptr()].
+//' @param W0 Single number giving the starting density of winged aphids.
+//'     Alates are spread across ages using the alate column of `distr_0`
+//'     in [make_insects_ptr()], or the stable age distribution of the alate
+//'     Leslie matrix if that column is all zeros (the default).
+//' @param M0 Single number giving the starting density of mummies,
+//'     spread evenly across mummy ages.
+//' @param Y0 Single number giving the starting density of adult female
+//'     parasitoids.
+//' @param insects_ptr External pointer to a C++ object with insect population
+//'     information, output from function [make_insects_ptr()].
+//'
+//' @return A tibble with one row per day (starting with the initial
+//'     conditions at time `0`) and columns `time`, `aphids` (non-winged),
+//'     `alates`, `parasitized`, `mummies`, and `wasps`.
 //'
 //' @export
 //'

@@ -43,6 +43,23 @@ get_aphid_X0 <- function(insects_ptr) {
 #' (argument `fly_p` in [make_insects_ptr()] is ignored and set to `0`).
 #'
 #' @inheritParams sim_plantscape
+#' @param N0 Single number giving the starting density of non-winged aphids.
+#'     It is spread across ages by the stable age distribution unless
+#'     `distr_0` is set in [make_insects_ptr()].
+#' @param W0 Single number giving the starting density of winged aphids.
+#'     Alates are spread across ages using the alate column of `distr_0`
+#'     in [make_insects_ptr()], or the stable age distribution of the alate
+#'     Leslie matrix if that column is all zeros (the default).
+#' @param M0 Single number giving the starting density of mummies,
+#'     spread evenly across mummy ages.
+#' @param Y0 Single number giving the starting density of adult female
+#'     parasitoids.
+#' @param insects_ptr External pointer to a C++ object with insect population
+#'     information, output from function [make_insects_ptr()].
+#'
+#' @return A tibble with one row per day (starting with the initial
+#'     conditions at time `0`) and columns `time`, `aphids` (non-winged),
+#'     `alates`, `parasitized`, `mummies`, and `wasps`.
 #'
 #' @export
 #'
@@ -52,6 +69,9 @@ test_insect_pops <- function(max_t, N0, W0, M0, Y0, insects_ptr) {
 
 #' Logit and inverse logit functions.
 #'
+#' @param p Numeric vector of probabilities (between 0 and 1).
+#'
+#' @return A numeric vector the same length as the input.
 #'
 #' @export
 #'
@@ -60,6 +80,8 @@ logit <- function(p) {
 }
 
 #' @rdname logit
+#'
+#' @param a Numeric vector on the logit scale.
 #'
 #' @export
 #'
@@ -87,6 +109,9 @@ leslie_matrix <- function(instar_days, surv_juv, surv_adult, repro) {
 #' Just create column names, for use in R.
 #'
 #' @inheritParams sim_plantscape
+#' @param n_age_stages Single integer giving the number of age stages for
+#'     each aphid type (apterous or alate); only used when
+#'     `out_stages = "all"`. Defaults to `29`.
 #'
 #' @export
 #'
@@ -109,10 +134,6 @@ col_namer <- function(summ, out_pseudo, out_attack_surv, out_stages, n_age_stage
 #'
 #' For smaller landscapes (e.g., 3x3), I use `radius = 1`.
 #'
-#' @param n_x Single integer indicating x dimension of the landscape.
-#'     Must be at least `2` and less than `1e6`.
-#' @param n_y Single integer indicating y dimension of the landscape.
-#'     Must be at least `2` and less than `1e6`.
 #' @param radius Max distance that alates will travel between plants.
 #'     Must be >= 1.
 #'     See "Radius" section below for details.
@@ -262,6 +283,9 @@ make_disease_ptr <- function(radius, virus_attract, pseudo_repel, p_load_alate, 
 #'     the array should have the same dimensions as `landscapes`.
 #'     The array can also be 1x1, in which case it's assumed that all plants
 #'     and reps start with the same density of winged aphids.
+#'     Alates are spread across ages using the alate column of `distr_0`
+#'     in [make_insects_ptr()], or the stable age distribution of the alate
+#'     Leslie matrix if that column is all zeros (the default).
 #' @param M0 Numeric 3D array indicating the starting mummy population
 #'     density for each plant and rep.
 #'     To indicate separate densities for each plant and/or rep,
@@ -385,9 +409,10 @@ sim_plantscape <- function(landscapes, N0, W0, M0, Y0, insect_ptr, disease_ptr, 
 #' Weight values above 1 cause neighboring locations to be more likely to be
 #' sampled later, while values below 1 cause them to be less likely
 #' sampled.
-#' These weights apply to all plants directly next to the plant of a given
-#' type, and they accrue multiplicatively.
-#' For example, if `wt_vp = 2` and *Pseudomonas* was place on a plant at
+#' These weights apply to the plant of a given type and all plants
+#' directly next to it (including diagonally), and they accrue
+#' multiplicatively.
+#' For example, if `wt_pv = 2` and *Pseudomonas* was placed on a plant at
 #' location `1,1` (x,y), then plants at locations `1,1`; `1,2`; `2,2`; and `2,1`
 #' would all be twice as likely to be sampled as a location for a virus to be
 #' placed later on.
@@ -419,10 +444,24 @@ sim_plantscape <- function(landscapes, N0, W0, M0, Y0, insect_ptr, disease_ptr, 
 #'     See section "Weighting" above for how these weights work.
 #'     Must be >= 0. Defaults to `1`.
 #' @param n_virus Single integer indicating the number of plants that should
-#'     be virus infected. This value must be `>=1` and `<= n_x * n_y`.
+#'     be virus infected. This value must be `>= 0` and `<= n_x * n_y`,
+#'     and `n_virus + n_pseudo` must be `>= 1`.
 #' @param n_pseudo Single integer indicating the number of plants that should
 #'     be *Pseudomonas* infected.
-#'     This value must be `>=1` and `<= n_x * n_y`.
+#'     This value must be `>= 0` and `<= n_x * n_y`,
+#'     and `n_virus + n_pseudo` must be `>= 1`.
+#' @param virus_starts Optional integer matrix with two columns (x and y)
+#'     giving locations of virus-infected plants that are the same in every
+#'     landscape. Coordinates start at `1`.
+#'     Must have `<= n_virus` rows; remaining virus-infected plants are
+#'     placed randomly.
+#'     These plants are placed before all randomly placed plants, so they
+#'     affect later placements through the `wt_*` weights.
+#'     Defaults to `NULL`.
+#' @param pseudo_starts Optional integer matrix like `virus_starts`, but for
+#'     *Pseudomonas*-inhabited plants (placed after `virus_starts`).
+#'     Must have `<= n_pseudo` rows.
+#'     Defaults to `NULL`.
 #' @param n_lands Single integer indicating the number of independent
 #'     landscapes to simulate. Each landscape will have a number of samples
 #'     per type according to `n_virus` and `n_pseudo`.

@@ -20,6 +20,6 @@ being parasitized: living and dead ("mummy"), respectively.}
 an_dev_times
 }
 \description{
-See \code{vignette("internals", "aeonia")} for the exact values here.
+Print the object to see the values used.
 }
 \keyword{datasets}

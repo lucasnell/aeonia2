@@ -106,11 +106,11 @@ name as the project, so there are three ways to install `aeonia`:
 
 ``` r
 # If using `renv`:
-renv::install("lucasnell/aeonia@v0.1.0.1")
+renv::install("lucasnell/aeonia@v0.1.0.2")
 
 # If not using `renv`:
 if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
-remotes::install_github("lucasnell/aeonia@v0.1.0.1")
+remotes::install_github("lucasnell/aeonia@v0.1.0.2")
 
 # If you've downloaded this repo, you can also install from source:
 if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")

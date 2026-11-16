@@ -29,6 +29,16 @@
 #'     If a 3D array, it must be 100 x 100 x `n_sims` and gives the abundance of
 #'     winged aphids per plant across repetitions.
 #'     Defaults to `0`.
+#'     Alates are spread across ages using the alate column of `distr_0`
+#'     in [make_insects_ptr()], or the stable age distribution of the alate
+#'     Leslie matrix if that column is all zeros (the default).
+#' @param M0 If a single numeric, it gives the mean for the lognormal
+#'     distribution used to generate mummy densities per patch.
+#'     If a numeric matrix, it must be 100 x 100 and gives the abundance of
+#'     mummies per plant that is the same across repetitions.
+#'     If a 3D array, it must be 100 x 100 x `n_sims` and gives the abundance of
+#'     mummies per plant across repetitions.
+#'     Defaults to `0`.
 #' @param radius Max distance that alates will travel between plants.
 #'     Must be >= 1.
 #'     See "Radius" section in the description for [lil_plantscape()] for details.
@@ -42,6 +52,7 @@
 #' @inheritParams sim_plantscape
 #' @inheritParams make_disease_ptr
 #' @inheritParams make_insects_ptr
+#' @inheritParams lil_plantscape
 #'
 #' @returns A tibble with columns following the description in the
 #'     "Summarizing" section in the docs for function [sim_plantscape()].

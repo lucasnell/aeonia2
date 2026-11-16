@@ -36,7 +36,6 @@ Value taken from \url{https://doi.org/10.3929/ethz-a-000909462}.
 an_environ
 }
 \description{
-See \code{vignette("internals", "aeonia")} for more information and
-for the exact values used.
+Print the object to see the values used.
 }
 \keyword{datasets}
