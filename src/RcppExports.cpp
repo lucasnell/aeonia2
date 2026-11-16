@@ -319,6 +319,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// attack_surv_test_cpp
+arma::vec attack_surv_test_cpp(const arma::vec& rel_attack, const double& a, const double& k, const double& h, const double& Y_m, const double& x, const arma::vec& attack_surv);
+RcppExport SEXP _aeonia_attack_surv_test_cpp(SEXP rel_attackSEXP, SEXP aSEXP, SEXP kSEXP, SEXP hSEXP, SEXP Y_mSEXP, SEXP xSEXP, SEXP attack_survSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::vec& >::type rel_attack(rel_attackSEXP);
+    Rcpp::traits::input_parameter< const double& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double& >::type k(kSEXP);
+    Rcpp::traits::input_parameter< const double& >::type h(hSEXP);
+    Rcpp::traits::input_parameter< const double& >::type Y_m(Y_mSEXP);
+    Rcpp::traits::input_parameter< const double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type attack_surv(attack_survSEXP);
+    rcpp_result_gen = Rcpp::wrap(attack_surv_test_cpp(rel_attack, a, k, h, Y_m, x, attack_surv));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_aeonia_make_aphids_ptr", (DL_FUNC) &_aeonia_make_aphids_ptr, 17},
@@ -341,6 +358,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aeonia_booter", (DL_FUNC) &_aeonia_booter, 3},
     {"_aeonia_make_wasps_ptr", (DL_FUNC) &_aeonia_make_wasps_ptr, 9},
     {"_aeonia_make_mummies_ptr", (DL_FUNC) &_aeonia_make_mummies_ptr, 4},
+    {"_aeonia_attack_surv_test_cpp", (DL_FUNC) &_aeonia_attack_surv_test_cpp, 7},
     {NULL, NULL, 0}
 };
 

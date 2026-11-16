@@ -42,8 +42,7 @@ Values < 0 or > 3 are not allowed.}
 Sampling weights for virus-infectious plants is \code{virus_attract},
 compared to empty (no virus or \emph{Pseudomonas}) plants whose weight is 1.
 Thus, when \code{virus_attract > 1}, alates are attracted to virus-infectious
-plants, while \code{virus_attract < 1} causes them to be repelled by
-virus-infectious plants.
+plants.
 Values must be \verb{> 0}.}
 
 \item{pseudo_repel}{Effect of \emph{Pseudomonas} infection on alate alighting.
@@ -119,3 +118,12 @@ A tibble with columns following the description in the
 \description{
 Simulate large (100 x 100) plantscape.
 }
+\section{Memory}{
+
+Argument \code{summ} (passed through \code{...} to \code{\link[=sim_plantscape]{sim_plantscape()}}) defaults to
+\code{"none"}, which outputs one row per plant, time point, and simulation
+(10,000 plants per time point here).
+This is extremely memory-heavy for more than a few simulations;
+use \code{summ = "time"} or \code{summ = "all"} unless you need output by plant.
+}
+

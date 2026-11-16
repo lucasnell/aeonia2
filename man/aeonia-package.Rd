@@ -6,14 +6,7 @@
 \alias{aeonia-package}
 \title{aeonia: Alate Effects On Nonpersistent Infection Advancement}
 \description{
-Simulates aphid--parasitoid population dynamics and the spread of a
-nonpersistently transmitted, aphid-borne plant virus on grids of plants,
-some of which are inhabited by Pseudomonas bacteria that reduce aphid
-survival. Aphid (apterous and alate) and parasitoid wasp populations are
-tracked on each plant, alates disperse among plants, and alates acquire
-and inoculate the virus as they move. Simulations can be run on small (3
-x 3) or large (100 x 100) landscapes, and the package also simulates
-spatial arrangements of virus-infected and Pseudomonas-inhabited plants.
+Simulates aphid--parasitoid population dynamics and the spread of a nonpersistently transmitted, aphid-borne plant virus on grids of plants, some of which are inhabited by Pseudomonas bacteria that reduce aphid survival. Aphid (apterous and alate) and parasitoid wasp populations are tracked on each plant, alates disperse among plants, and alates acquire and inoculate the virus as they move. Simulations can be run on small (3 x 3) or large (100 x 100) landscapes, and the package also simulates spatial arrangements of virus-infected and Pseudomonas-inhabited plants.
 }
 \seealso{
 Useful links:

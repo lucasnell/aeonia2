@@ -17,13 +17,15 @@ void ScapeSimmer::run(const bool& infect_stop,
     bool all_infected = false;
     for (uint32 t = 0; t < max_t; t++) {
         all_infected = scape.iterate(*disp_iter);
-        // Move to next dispersal matrix if necessary:
-        if (out_any_dispersals) disp_iter++;
+        // Move to next dispersal matrix if necessary
+        // (when summ == "all", one matrix accumulates all time points):
+        if (out_any_dispersals && summ != "all") disp_iter++;
         // Fill `output` with current conditions:
         fill_output();
         if (infect_stop && all_infected) {
             // Shorten dispersals if stopping early bc of full infection:
-            if (out_any_dispersals && disp_iter != dispersals.end()) {
+            if (out_any_dispersals && summ != "all" &&
+                disp_iter != dispersals.end()) {
                 // Note: no need to add one to `curr_size` bc line after
                 // `scape.iterate()` already iterates `disp_iter`
                 size_t curr_size = disp_iter - dispersals.begin();
@@ -167,8 +169,7 @@ void ScapeSimmer::fill_output() {
 //'     Sampling weights for virus-infectious plants is `virus_attract`,
 //'     compared to empty (no virus or *Pseudomonas*) plants whose weight is 1.
 //'     Thus, when `virus_attract > 1`, alates are attracted to virus-infectious
-//'     plants, while `virus_attract < 1` causes them to be repelled by
-//'     virus-infectious plants.
+//'     plants.
 //'     Values must be `> 0`.
 //' @param pseudo_repel Effect of *Pseudomonas* infection on alate alighting.
 //'     Sampling weights for *Pseudomonas*-containing plants is
@@ -204,10 +205,7 @@ void ScapeSimmer::fill_output() {
 //' @param total_exp_days Single integer indicating the number of days required
 //'     for a plant to transition from exposed (inoculated with virus but
 //'     not able to pass it on) to infectious (able to infect other plants).
-//'     A value of `0` means that an alate inoculating a plant causes that
-//'     plant to be infectious the same day.
-//'     Because this is not realistic and computationally troublesome,
-//'     only values `>1` are allowed.
+//'     Must be `>= 1`.
 //'     Defaults to `7`, which is based on the paper "Cucumber mosaic virus
 //'     isolates seedborne in *Phaseolus vulgaris*: serology, host-pathogen
 //'     relationships, and seed transmission" (Davis & Hampton, 1986).
@@ -345,6 +343,13 @@ void check_plantscape_args(const arma::ucube& landscapes,
         stop("dim(M0) must be c(1,1,1) or dim(landscapes)");
     }
 
+    // Each landscape must start with some non-winged aphids:
+    for (uint32 i = 0; i < N0.n_slices; i++) {
+        if (!(arma::accu(N0.slice(i)) > 0)) {
+            stop("N0 must be > 0 on at least one plant in each landscape");
+        }
+    }
+
     if (Y0.n_elem == 1) {
         double val = Y0(0);
         Y0.set_size(n_reps);
@@ -422,7 +427,14 @@ void check_plantscape_args(const arma::ucube& landscapes,
 //' 8.  `alates`: alate density
 //' 9.  `parasitized`: parasitized aphid density
 //' 10. `mummies`: mummy density
-//' 11. `wasps`: total parasitoid density (`x` and `y` for this row will be 0)
+//' 11. `wasps`: adult female parasitoid density on the plant
+//'
+//' For each rep and time point, one more row gives totals across all plants
+//' (`x` and `y` are `NA`), and its `wasps` column is the total adult
+//' female parasitoid density.
+//' Parasitoids are allocated to plants based on `zeta`, `wasp_plant_attract`,
+//' and relative aphid densities; when no plant has aphids, they are allocated
+//' based on `wasp_plant_attract` alone.
 //'
 //'
 //' If `summ == "time"`, one row is output per rep and time point.
@@ -444,14 +456,20 @@ void check_plantscape_args(const arma::ucube& landscapes,
 //' 4.  `aphids`: mean aphids
 //' 5.  `log_alates`: mean log(alates+1)
 //' 6.  `alates`: mean alates
-//' 7.  `log_alates`: mean log(parasitized aphids+1)
-//' 8.  `alates`: mean parasitized aphids
+//' 7.  `log_parasitized`: mean log(parasitized aphids+1)
+//' 8.  `parasitized`: mean parasitized aphids
 //' 9.  `log_mummies`: mean log(mummies+1)
 //' 10. `mummies`: mean mummies
 //' 11. `log_wasps`: mean log(wasps+1)
 //' 12. `wasps`: mean wasps
-//' 13. `infect_time`: time it took to have `infect_time_n` plants infected
-//' 14. `n_infected`: maximum number of plants infected with virus
+//' 13. `aphid_gone_n`: proportion of time points where total aphids
+//'     (all stages + parasitized) are below `aphid_gone_thresh`
+//' 14. `wasp_gone_n`: proportion of time points where wasps are below
+//'     `wasp_gone_thresh`
+//' 15. `infect_time`: time it took to have `infect_time_n` plants infected
+//' 16. `n_infected`: maximum number of plants infected with virus
+//'
+//' For `p_alates`, time points with no aphids are counted as `0`.
 //'
 //'
 //'
@@ -476,6 +494,8 @@ void check_plantscape_args(const arma::ucube& landscapes,
 //'     the array should have the same dimensions as `landscapes`.
 //'     The array can also be 1x1, in which case it's assumed that all plants
 //'     and reps start with the same density of aphids.
+//'     Values must be `>= 0`, and each landscape must have at least one
+//'     plant with a value `> 0`.
 //' @param W0 Numeric 3D array indicating the starting winged aphid population
 //'     density for each plant and rep.
 //'     To indicate separate densities for each plant and/or rep,
@@ -536,7 +556,7 @@ void check_plantscape_args(const arma::ucube& landscapes,
 //'     Defaults to `1`.
 //' @param infect_stop Single logical for whether to stop simulations
 //'     when all plants are infected with virus.
-//'     Defaults to `TRUE`.
+//'     Defaults to `FALSE`.
 //' @param out_pseudo Single logical for whether to include *Pseudomonas*
 //'     presence in output. Ignored if `summ != "none"`.
 //'     Defaults to `FALSE`.

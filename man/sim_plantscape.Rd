@@ -47,7 +47,9 @@ density for each plant and rep.
 To indicate separate densities for each plant and/or rep,
 the array should have the same dimensions as \code{landscapes}.
 The array can also be 1x1, in which case it's assumed that all plants
-and reps start with the same density of aphids.}
+and reps start with the same density of aphids.
+Values must be \verb{>= 0}, and each landscape must have at least one
+plant with a value \verb{> 0}.}
 
 \item{W0}{Numeric 3D array indicating the starting winged aphid population
 density for each plant and rep.
@@ -121,7 +123,7 @@ Defaults to \code{1}.}
 
 \item{infect_stop}{Single logical for whether to stop simulations
 when all plants are infected with virus.
-Defaults to \code{TRUE}.}
+Defaults to \code{FALSE}.}
 
 \item{out_pseudo}{Single logical for whether to include \emph{Pseudomonas}
 presence in output. Ignored if \code{summ != "none"}.
@@ -188,8 +190,15 @@ included if \code{out_pseudo = FALSE}
 \item \code{alates}: alate density
 \item \code{parasitized}: parasitized aphid density
 \item \code{mummies}: mummy density
-\item \code{wasps}: total parasitoid density (\code{x} and \code{y} for this row will be 0)
+\item \code{wasps}: adult female parasitoid density on the plant
 }
+
+For each rep and time point, one more row gives totals across all plants
+(\code{x} and \code{y} are \code{NA}), and its \code{wasps} column is the total adult
+female parasitoid density.
+Parasitoids are allocated to plants based on \code{zeta}, \code{wasp_plant_attract},
+and relative aphid densities; when no plant has aphids, they are allocated
+based on \code{wasp_plant_attract} alone.
 
 If \code{summ == "time"}, one row is output per rep and time point.
 The columns are...
@@ -213,14 +222,20 @@ The columns are...
 \item \code{aphids}: mean aphids
 \item \code{log_alates}: mean log(alates+1)
 \item \code{alates}: mean alates
-\item \code{log_alates}: mean log(parasitized aphids+1)
-\item \code{alates}: mean parasitized aphids
+\item \code{log_parasitized}: mean log(parasitized aphids+1)
+\item \code{parasitized}: mean parasitized aphids
 \item \code{log_mummies}: mean log(mummies+1)
 \item \code{mummies}: mean mummies
 \item \code{log_wasps}: mean log(wasps+1)
 \item \code{wasps}: mean wasps
+\item \code{aphid_gone_n}: proportion of time points where total aphids
+(all stages + parasitized) are below \code{aphid_gone_thresh}
+\item \code{wasp_gone_n}: proportion of time points where wasps are below
+\code{wasp_gone_thresh}
 \item \code{infect_time}: time it took to have \code{infect_time_n} plants infected
 \item \code{n_infected}: maximum number of plants infected with virus
 }
+
+For \code{p_alates}, time points with no aphids are counted as \code{0}.
 }
 

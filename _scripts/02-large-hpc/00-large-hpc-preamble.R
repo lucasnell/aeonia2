@@ -30,6 +30,12 @@ suppressPackageStartupMessages({
     library(aeonia)
 })
 
+# Versions before 0.1.0.0 have an alate-dispersal bug (alates moved and
+# settled based on the mirror-image plant across the landscape diagonal):
+if (packageVersion("aeonia") < "0.1.0.0") {
+    stop("aeonia >= 0.1.0.0 is required; see README for install instructions")
+}
+
 landscape_rds <- paste0(file_dir, "/large-landscapes.rds")
 
 

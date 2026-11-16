@@ -664,7 +664,10 @@ void ps_out_all(DataFrame& out_df,
             alate_rt = arma::accu(aphids(ava_spans[1]));
             total_aphids_rt = apterous_rt + alate_rt;
 
-            tmp_list[k].back() += (alate_rt / total_aphids_rt);  // p_alates
+            // p_alates (set to 0 when there are no aphids):
+            if (total_aphids_rt > 0) {
+                tmp_list[k].back() += (alate_rt / total_aphids_rt);
+            }
             k++;
 
             add_aphids(aphids, spans, tmp_list, k);

@@ -101,8 +101,7 @@ Values must be \verb{> 0}.}
 Sampling weights for virus-infectious plants is \code{virus_attract},
 compared to empty (no virus or \emph{Pseudomonas}) plants whose weight is 1.
 Thus, when \code{virus_attract > 1}, alates are attracted to virus-infectious
-plants, while \code{virus_attract < 1} causes them to be repelled by
-virus-infectious plants.
+plants.
 Values must be \verb{> 0}.}
 
 \item{p_load_alate}{Single numeric indicating the probability that an

@@ -14,7 +14,9 @@ density for each plant and rep.
 To indicate separate densities for each plant and/or rep,
 the array should have the same dimensions as \code{landscapes}.
 The array can also be 1x1, in which case it's assumed that all plants
-and reps start with the same density of aphids.}
+and reps start with the same density of aphids.
+Values must be \verb{>= 0}, and each landscape must have at least one
+plant with a value \verb{> 0}.}
 
 \item{W0}{Numeric 3D array indicating the starting winged aphid population
 density for each plant and rep.
@@ -36,6 +38,6 @@ The vector can also be of length 1, in which case it's assumed that
 all reps start with the same density of parasitoids.}
 }
 \description{
-This function is just for one plant, so the probability that an
-alate leaves the plant (argument \code{fly_p} in \code{\link[=make_insects_ptr]{make_insects_ptr()}}) is always 1.
+This function is just for one plant, so alates never leave the plant
+(argument \code{fly_p} in \code{\link[=make_insects_ptr]{make_insects_ptr()}} is ignored and set to \code{0}).
 }

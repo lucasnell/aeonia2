@@ -41,8 +41,8 @@ arma::vec get_aphid_X0(SEXP insects_ptr) {
 
 //' Test population dynamics for insects for a set of parameters.
 //'
-//' This function is just for one plant, so the probability that an
-//' alate leaves the plant (argument `fly_p` in [make_insects_ptr()]) is always 1.
+//' This function is just for one plant, so alates never leave the plant
+//' (argument `fly_p` in [make_insects_ptr()] is ignored and set to `0`).
 //'
 //' @inheritParams sim_plantscape
 //'

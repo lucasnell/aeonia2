@@ -48,7 +48,10 @@ distribution of parasitoids, and 1 results in a linear relationship
 between aphid density and parasitoids.}
 
 \item{extinct_N}{Single numeric indicating the extinction threshold.
-Defaults to \code{0}.}
+On each plant, aphids (all stages, including parasitized) are set to
+zero when their total falls below this value; the same applies to
+mummies.
+Defaults to \code{0}, which results in no extinction.}
 
 \item{demog_error}{Single logical for whether to include demographic
 stochasticity. Defaults to \code{FALSE}.}
@@ -79,7 +82,7 @@ Defaults to \code{0.0022}, which makes alate production only mildly
 density dependent.}
 
 \item{fly_p}{Single numeric indicating the proportion of alates that fly
-off plants each day. Defaults to \code{0.05}.}
+off plants each day. Defaults to \code{0.1}.}
 
 \item{distr_0}{A 2-column matrix indicating the starting stage distribution.
 (The total abundance of aphids is adjusted in the simulation function.)

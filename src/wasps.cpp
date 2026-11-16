@@ -198,3 +198,24 @@ SEXP make_mummies_ptr(const double& pred_surv,
     return mummies_xptr;
 
 }
+
+
+
+/*
+ Unexported wrapper around `WaspAttack::A_mats`, used only in tests to check
+ aphid survival from parasitoid attack against equation 6 from
+ Meisner et al. (2014).
+ */
+//[[Rcpp::export]]
+arma::vec attack_surv_test_cpp(const arma::vec& rel_attack,
+                               const double& a,
+                               const double& k,
+                               const double& h,
+                               const double& Y_m,
+                               const double& x,
+                               const arma::vec& attack_surv) {
+    WaspAttack attack(rel_attack, a, k, h);
+    arma::vec A_surv;
+    attack.A_mats(Y_m, x, A_surv, attack_surv);
+    return A_surv;
+}

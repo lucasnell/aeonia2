@@ -24,8 +24,7 @@ See "Radius" section below for details.}
 Sampling weights for virus-infectious plants is \code{virus_attract},
 compared to empty (no virus or \emph{Pseudomonas}) plants whose weight is 1.
 Thus, when \code{virus_attract > 1}, alates are attracted to virus-infectious
-plants, while \code{virus_attract < 1} causes them to be repelled by
-virus-infectious plants.
+plants.
 Values must be \verb{> 0}.}
 
 \item{pseudo_repel}{Effect of \emph{Pseudomonas} infection on alate alighting.
@@ -67,10 +66,7 @@ Defaults to \code{0.2}.}
 \item{total_exp_days}{Single integer indicating the number of days required
 for a plant to transition from exposed (inoculated with virus but
 not able to pass it on) to infectious (able to infect other plants).
-A value of \code{0} means that an alate inoculating a plant causes that
-plant to be infectious the same day.
-Because this is not realistic and computationally troublesome,
-only values \verb{>1} are allowed.
+Must be \verb{>= 1}.
 Defaults to \code{7}, which is based on the paper "Cucumber mosaic virus
 isolates seedborne in \emph{Phaseolus vulgaris}: serology, host-pathogen
 relationships, and seed transmission" (Davis & Hampton, 1986).}

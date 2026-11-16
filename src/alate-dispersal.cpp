@@ -107,9 +107,10 @@ AlateFlightInfo::AlateFlightInfo(const uint32& max_fly_t_,
     uint32 ki, xi, yi;
     std::vector<uint32> neighbors_k;
     neighbors_k.reserve(n_neigh);
+    // Loop over y then x so that `k` matches `dim_conv.to_1d(x, y)`:
     uint32 k = 0;
-    for (uint32 x = 0; x < n_x; x++) {
-        for (uint32 y = 0; y < n_y; y++) {
+    for (uint32 y = 0; y < n_y; y++) {
+        for (uint32 x = 0; x < n_x; x++) {
             // --------------------------
             // Set this plant's weight:
             land_wts.at(k) = 1.0;
@@ -281,7 +282,9 @@ void AlateFlightInfo::infest(const double& p_load_alate,
         const uint32& x0(coords0[0]);
         const uint32& y0(coords0[1]);
         k0 = dim_conv.to_1d(x0, y0);
-        const AphidPop& aphids_xy(aphids[k0]);
+        // Note: `aphids` is ordered by x then y (k = x * n_y + y), unlike
+        // `dim_conv` indices (k = y * n_x + x):
+        const AphidPop& aphids_xy(aphids[x0 * n_y + y0]);
         arma::uvec n_alates_xy = n_alates.slice(y0).unsafe_col(x0);
 
         uint32 adult_age = aphids_xy.adult_age;
@@ -334,7 +337,7 @@ void AlateFlightInfo::infest(const double& p_load_alate,
                     if (runif_01(eng) < feed_p) {
                         keep_going = false;
                         // Adding alate to winged population of plant settled on:
-                        AphidPop& aphids_old(aphids[k_old]);
+                        AphidPop& aphids_old(aphids[x_old * n_y + y_old]);
                         aphids_old.alates.X.at(adult_age + i) += 1;
                         break;
                     }
@@ -364,7 +367,7 @@ void AlateFlightInfo::infest(const double& p_load_alate,
                 // If reaching max fly iterations, adding alate to winged
                 // population of plant settled on:
                 if (t >= max_fly_t && keep_going) {
-                    AphidPop& aphids_old(aphids[k_old]);
+                    AphidPop& aphids_old(aphids[x_old * n_y + y_old]);
                     aphids_old.alates.X.at(adult_age + i) += 1;
                 }
 

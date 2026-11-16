@@ -14,7 +14,10 @@
 #'     distribution of parasitoids, and 1 results in a linear relationship
 #'     between aphid density and parasitoids.
 #' @param extinct_N Single numeric indicating the extinction threshold.
-#'     Defaults to `0`.
+#'     On each plant, aphids (all stages, including parasitized) are set to
+#'     zero when their total falls below this value; the same applies to
+#'     mummies.
+#'     Defaults to `0`, which results in no extinction.
 #' @param demog_error Single logical for whether to include demographic
 #'     stochasticity. Defaults to `FALSE`.
 #' @param environ_error Single logical for whether to include environmental
@@ -37,7 +40,7 @@
 #'     Defaults to `0.0022`, which makes alate production only mildly
 #'     density dependent.
 #' @param fly_p Single numeric indicating the proportion of alates that fly
-#'     off plants each day. Defaults to `0.05`.
+#'     off plants each day. Defaults to `0.1`.
 #' @param distr_0 A 2-column matrix indicating the starting stage distribution.
 #'     (The total abundance of aphids is adjusted in the simulation function.)
 #'     If `NULL`, there will be no starting alates and apterous densities

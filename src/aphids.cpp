@@ -161,6 +161,9 @@ double AphidPop::no_disp_iterate(const arma::vec& A_surv, pcg32& eng) {
     apterous.X.at(0) += alates.X.at(0); // <-- we assume alates make apterous
     alates.X.at(0) = new_alates;
 
+    // Extinction (all stages, including parasitized) below threshold:
+    if (total() < extinct_N) clear();
+
     return new_mummies;
 }
 

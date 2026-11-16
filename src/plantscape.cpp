@@ -24,6 +24,14 @@ void PlantScape::fill_Yi_mat() {
         }
     }
 
+    // If there are no aphids anywhere, parasitoids are distributed by
+    // `wasp_attract` only (avoids 0 / 0 below):
+    if (z_tot <= 0) {
+        z_mat.zeros();
+        Yi_mat = Y * wasp_attract;
+        return;
+    }
+
     // Now go back through and calculate Y for each patch:
     for (uint32 x = 0; x < n_x; x++) {
         for (uint32 y = 0; y < n_y; y++) {

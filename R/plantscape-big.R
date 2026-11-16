@@ -46,6 +46,13 @@
 #' @returns A tibble with columns following the description in the
 #'     "Summarizing" section in the docs for function [sim_plantscape()].
 #'
+#' @section Memory:
+#' Argument `summ` (passed through `...` to [sim_plantscape()]) defaults to
+#' `"none"`, which outputs one row per plant, time point, and simulation
+#' (10,000 plants per time point here).
+#' This is extremely memory-heavy for more than a few simulations;
+#' use `summ = "time"` or `summ = "all"` unless you need output by plant.
+#'
 #' @export
 #'
 #'
