@@ -62,3 +62,16 @@ test_that("plantscape wrappers reject bad landscapes and densities (A3)", {
 test_that("alate_prop() rejects negative densities (A4)", {
     expect_error(alate_prop(-1), "z < 0")
 })
+
+test_that("lil_plantscape() checks n_pseudo against spat_config (A3)", {
+    # Fixed layouts allow 0 or 3 Pseudomonas plants:
+    for (sc in c("diagonal", "near virus", "far virus", "over virus")) {
+        expect_no_error(lil(n_sims = 2, n_pseudo = 0, spat_config = sc))
+        expect_no_error(lil(n_sims = 2, n_pseudo = 3, spat_config = sc))
+        expect_error(lil(n_sims = 2, n_pseudo = 5, spat_config = sc),
+                     "exactly 0 or 3")
+    }
+    # Random layouts allow other counts:
+    expect_no_error(lil(n_sims = 2, n_pseudo = 5, spat_config = "random"))
+    expect_no_error(lil(n_sims = 2, n_pseudo = 5, spat_config = "no virus"))
+})

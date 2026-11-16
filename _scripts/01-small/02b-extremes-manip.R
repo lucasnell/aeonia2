@@ -606,7 +606,9 @@ if (.overwrite || !file.exists("_plots/supp/extremes-manip-Y0-N0-heatmaps.pdf"))
 # ============================================================================*
 # ============================================================================*
 
-manip_sims |>
+
+
+zeta_brk_df <- manip_sims |>
     filter(par_name == "zeta") |>
     rename(zeta = par_val) |>
     group_by(zeta, n_pseudo) |>
@@ -619,10 +621,28 @@ manip_sims |>
     group_by(zeta, outcome) |>
     summarize(diff = value[n_pseudo > 0] - value[n_pseudo == 0],
               .groups = "drop") |>
-    filter(zeta > 0.6, zeta < 0.8) |>
+    filter(zeta > 0.6, zeta < 0.8)
+
+zeta_brk_summ_df <- zeta_brk_df |>
+    group_by(outcome) |>
+    summarize(zeta = (\(z, d) {
+        f <- approxfun(z, d)
+        return(uniroot(f, interval = range(z))[["root"]])
+    })(zeta, diff))
+
+zeta_brk_summ_df
+#   outcome        zeta
+#   <fct>         <dbl>
+# 1 p_emerge      0.688
+# 2 outbreak_size 0.714
+# 3 n_infected    0.701
+
+
+zeta_brk_df |>
     ggplot(aes(zeta, diff)) +
     geom_hline(yintercept = 0, color = "gray70") +
-    geom_vline(xintercept = c(0.7, 0.688, 0.693), color = "gray70", linetype = "22") +
+    geom_vline(data = zeta_brk_summ_df, aes(xintercept = zeta),
+               color = "gray70", linetype = "22") +
     geom_line() +
     geom_point() +
     facet_wrap(~ outcome, ncol = 1)

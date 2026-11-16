@@ -199,9 +199,10 @@ lil_plantscape <- function(n_sims,
     spat_config <- match.arg(spat_config, c("random", "no virus", "diagonal",
                                             "near virus", "far virus", "over virus"))
 
-    if (n_pseudo != 3 && ! spat_config %in% c("random", "no virus")) {
+    if (n_pseudo != 0 && n_pseudo != 3 &&
+        ! spat_config %in% c("random", "no virus")) {
         stop("Any spatial configuration other than \"random\" or \"no virus\" ",
-             "can only be used with exactly 3 Pseudomonas patches")
+             "can only be used with exactly 0 or 3 Pseudomonas patches")
     }
 
     n_x <- 3L

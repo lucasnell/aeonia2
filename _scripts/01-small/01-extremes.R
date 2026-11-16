@@ -56,10 +56,10 @@ large_sims |>
     mutate(across(n_infected:outbreak_size, \(x) num(x, digits = 3)))
 #   wasp_resp n_pseudo n_infected  p_emerge outbreak_size
 #   <fct>        <int>  <num:.3!> <num:.3!>     <num:.3!>
-# 1 weak             0      3.686     0.796         4.374
-# 2 weak             3      8.273     1.000         8.273
-# 3 strong           0      3.671     0.800         4.339
-# 4 strong           3      2.141     0.441         3.587
+# 1 weak             0      3.575     0.751         4.429
+# 2 weak             3      8.307     1.000         8.307
+# 3 strong           0      3.629     0.798         4.294
+# 4 strong           3      2.130     0.438         3.580
 
 
 large_sims |>
@@ -70,8 +70,8 @@ large_sims |>
     mutate(across(n_infected:outbreak_size, \(x) num(x, digits = 3)))
 #   wasp_resp n_infected  p_emerge outbreak_size
 #   <fct>      <num:.3!> <num:.3!>     <num:.3!>
-# 1 weak           4.587     0.204         3.899
-# 2 strong        -1.530    -0.359        -0.751
+# 1 weak           4.732     0.249         3.878
+# 2 strong        -1.499    -0.360        -0.715
 
 
 # ============================================================================*

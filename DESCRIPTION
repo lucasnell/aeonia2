@@ -1,6 +1,6 @@
 Package: aeonia
 Title: Alate Effects On Nonpersistent Infection Advancement
-Version: 0.1.0.0
+Version: 0.1.0.1
 Description: Simulates aphid--parasitoid population dynamics and the spread of a
     nonpersistently transmitted, aphid-borne plant virus on grids of plants,
     some of which are inhabited by Pseudomonas bacteria that reduce aphid
