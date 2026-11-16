@@ -33,7 +33,8 @@
 #
 # BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
 # mkdir -p ./interm-data/large-r_fly
-# scp biohpc:/home2/${BIOHPC_USER}/03-large-r_fly/large-r_fly*.rds ./interm-data/large-r_fly/
+# scp biohpc:/home2/${BIOHPC_USER}/03-large-r_fly/large-r_fly*.rds \
+#     ./interm-data/large-r_fly/
 #
 #
 

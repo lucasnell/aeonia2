@@ -21,8 +21,7 @@
 # # cluster username, from the `User` line for host `biohpc` in ~/.ssh/config:
 # BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
 # ssh biohpc 'mkdir -p /home2/$USER/01-large-main/logs'
-# scp ./02-large-hpc/01-large-main.sh \
-#     biohpc:/home2/${BIOHPC_USER}/01-large-main/
+# scp ./02-large-hpc/01-large-main.sh biohpc:/home2/${BIOHPC_USER}/01-large-main/
 #
 # This was then run on BioHPC in a non-interactive batch job started with the following:
 #
