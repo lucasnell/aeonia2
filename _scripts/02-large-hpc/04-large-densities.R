@@ -5,9 +5,9 @@
 #'
 #' Instead, move it to the cluster (from `~/GitHub/Cornell/aeonia/_scripts`):
 #' # cluster username, from the `User` line for host `biohpc` in ~/.ssh/config:
-#' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+#' HPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
 #' ssh biohpc 'mkdir -p /home2/$USER/04-large-densities'
-#' scp ./02-large-hpc/04-large-densities.R biohpc:/home2/${BIOHPC_USER}/04-large-densities/
+#' scp ./02-large-hpc/04-large-densities.R biohpc:/home2/${HPC_USER}/04-large-densities/
 #'
 #' Then run it on the cluster using an interactive job:
 #' cd /home2/$USER/04-large-densities
@@ -18,8 +18,8 @@
 #' Then, when the jobs are done (assuming you're back on your desktop in
 #' directory `~/GitHub/Cornell/aeonia/_scripts`):
 #'
-#' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
-#' scp biohpc:/home2/${BIOHPC_USER}/04-large-densities/density-sims.csv ./interm-data/
+#' HPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+#' scp biohpc:/home2/${HPC_USER}/04-large-densities/density-sims.csv ./interm-data/
 
 
 source("../00-large-hpc-preamble.R")

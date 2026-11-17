@@ -48,7 +48,7 @@
   output back into `interm-data` are in comments at the top of each file.
   These commands assume an ssh host alias `biohpc` in `~/.ssh/config`
   with a `User` line giving your cluster username;
-  `BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')` reads that
+  `HPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')` reads that
   username locally so it can be used in `scp` paths.
 - Each local script sets `.overwrite <- FALSE` near its top.
   With `.overwrite <- FALSE`, simulations are only run, and plots only saved,

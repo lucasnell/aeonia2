@@ -19,9 +19,9 @@
 #
 # cd ~/GitHub/Cornell/aeonia/_scripts
 # # cluster username, from the `User` line for host `biohpc` in ~/.ssh/config:
-# BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+# HPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
 # ssh biohpc 'mkdir -p /home2/$USER/01-large-main/logs'
-# scp ./02-large-hpc/01-large-main.sh biohpc:/home2/${BIOHPC_USER}/01-large-main/
+# scp ./02-large-hpc/01-large-main.sh biohpc:/home2/${HPC_USER}/01-large-main/
 #
 # This was then run on BioHPC in a non-interactive batch job started with the following:
 #
@@ -31,9 +31,9 @@
 # Then, when the jobs are done (assuming you're back on your desktop in
 # directory `~/GitHub/Cornell/aeonia/_scripts`):
 #
-# BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+# HPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
 # mkdir -p ./interm-data/large-main
-# scp biohpc:/home2/${BIOHPC_USER}/01-large-main/large-main*.rds \
+# scp biohpc:/home2/${HPC_USER}/01-large-main/large-main*.rds \
 #     ./interm-data/large-main/
 #
 #

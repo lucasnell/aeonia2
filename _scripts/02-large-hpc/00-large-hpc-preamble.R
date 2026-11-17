@@ -6,8 +6,8 @@
 #'
 #' cd ~/GitHub/Cornell/aeonia/_scripts
 #' # cluster username, from the `User` line for host `biohpc` in ~/.ssh/config:
-#' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
-#' scp ./02-large-hpc/00-large-hpc-preamble.R biohpc:/home2/${BIOHPC_USER}/
+#' HPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
+#' scp ./02-large-hpc/00-large-hpc-preamble.R biohpc:/home2/${HPC_USER}/
 #'
 
 
