@@ -51,3 +51,6 @@ rsconnect/
 
 inst/doc
 .positai
+
+# Archive of intermediate simulation output shared with reviewers
+_scripts/*.zip

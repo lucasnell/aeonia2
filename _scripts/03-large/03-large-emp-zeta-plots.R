@@ -16,7 +16,7 @@ source("_scripts/00-preamble.R")
 # wasp abundances to those predicted when parasitoids never encounter an aphid
 # on a Pseudomonas-inhabited plant but always do on plants without Pseudomonas.
 if (!all(file.exists(c(interm_files$large_zeta, interm_files$large_zeta_ninf)))) {
-    stop("Run 02-large-hpc/04-large-emp-zeta.R first!")
+    stop("Run 02-large-hpc/05-large-emp-zeta.R first!")
 }
 
 
