@@ -1,6 +1,6 @@
 Package: aeonia
 Title: Alate Effects On Nonpersistent Infection Advancement
-Version: 0.1.0.3
+Version: 0.1.0.4
 Description: Simulates aphid--parasitoid population dynamics and the spread of a
     nonpersistently transmitted, aphid-borne plant virus on grids of plants,
     some of which are inhabited by Pseudomonas bacteria that reduce aphid
@@ -38,12 +38,6 @@ SystemRequirements:
 NeedsCompilation: yes
 URL: https://github.com/lucasnell/aeonia2
 BugReports: https://github.com/lucasnell/aeonia2/issues
-RemoteType: github
-RemoteHost: api.github.com
-RemoteRepo: aeonia
-RemoteUsername: lucasnell
-GithubRepo: aeonia
-GithubUsername: lucasnell
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
