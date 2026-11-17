@@ -3,7 +3,7 @@
 # Alate Effects On Nonpersistent Infection Advancement (aeonia)
 
 
-<!-- [![DOI](https://zenodo.org/badge/XXXXXXXXX.svg)](https://zenodo.org/badge/latestdoi/XXXXXXXXX) -->
+[![DOI](https://zenodo.org/badge/1444825708.svg)](https://zenodo.org/badge/latestdoi/1444825708)
 
 
 This repo contains the R package `aeonia` that simulates aphid--parasitoid
