@@ -102,15 +102,17 @@ install.packages(do.call(c, pkg_vers))
 
 
 Package `renv` doesn't store `aeonia` itself, presumably because it's the same 
-name as the project, so there are three ways to install `aeonia`:
+name as the project, so there are three ways to install `aeonia`.
+The GitHub repository is named `aeonia2`, but the package it installs is
+`aeonia` (loaded with `library(aeonia)`).
 
 ``` r
 # If using `renv`:
-renv::install("lucasnell/aeonia@v0.1.0.3")
+renv::install("lucasnell/aeonia2@v0.1.0.3")
 
 # If not using `renv`:
 if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
-remotes::install_github("lucasnell/aeonia@v0.1.0.3")
+remotes::install_github("lucasnell/aeonia2@v0.1.0.3")
 
 # If you've downloaded this repo, you can also install from source:
 if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")

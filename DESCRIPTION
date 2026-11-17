@@ -36,8 +36,8 @@ SystemRequirements:
     GNU make,
     C++20
 NeedsCompilation: yes
-URL: https://github.com/lucasnell/aeonia
-BugReports: https://github.com/lucasnell/aeonia/issues
+URL: https://github.com/lucasnell/aeonia2
+BugReports: https://github.com/lucasnell/aeonia2/issues
 RemoteType: github
 RemoteHost: api.github.com
 RemoteRepo: aeonia

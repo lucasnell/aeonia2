@@ -11,8 +11,8 @@ Simulates aphid--parasitoid population dynamics and the spread of a nonpersisten
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/lucasnell/aeonia}
-  \item Report bugs at \url{https://github.com/lucasnell/aeonia/issues}
+  \item \url{https://github.com/lucasnell/aeonia2}
+  \item Report bugs at \url{https://github.com/lucasnell/aeonia2/issues}
 }
 
 }
