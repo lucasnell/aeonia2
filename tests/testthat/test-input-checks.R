@@ -89,3 +89,25 @@ test_that("starting alates work with the default distr_0 (A3)", {
     ip <- make_insects_ptr(pseudo_surv = 1, zeta = 0)
     expect_no_error(test_insect_pops(5, N0 = 10, W0 = 5, M0 = 0, Y0 = 0, ip))
 })
+
+test_that("landscapes without a virus-infected plant give a warning (A3)", {
+    make_run <- function(L) {
+        sim_plantscape(L, N0 = array(55, c(1, 1, 1)), W0 = array(0, c(1, 1, 1)),
+                       M0 = array(0, c(1, 1, 1)), Y0 = 1,
+                       insect_ptr = make_insects_ptr(pseudo_surv = 1, zeta = 0.5),
+                       disease_ptr = make_disease_ptr(radius = 1, virus_attract = 1,
+                                                      pseudo_repel = 1,
+                                                      p_load_alate = 0.5,
+                                                      p_load_plant = 0.5),
+                       max_t = 5L, summ = "all", n_threads = 1L)
+    }
+    # Same mistake as building 12 landscapes from a 100,000-long vector:
+    L_bad <- array(c(1L, rep(0L, 26L)), c(3L, 3L, 4L))  # virus in slices 1 & 4
+    expect_warning(out <- make_run(L_bad), "2 of 4 landscape")
+    expect_identical(out$n_infected, c(1L, 0L, 0L, 1L))
+    # Code 3 (virus + Pseudomonas) counts as virus-infected:
+    L_ok <- array(0L, c(3L, 3L, 2L))
+    L_ok[1, 1, 1] <- 1L
+    L_ok[2, 2, 2] <- 3L
+    expect_no_warning(make_run(L_ok))
+})

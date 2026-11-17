@@ -15,8 +15,7 @@ source("_scripts/00-preamble.R")
 # Below simulates our model with varying zeta, then compares the observed
 # wasp abundances to those predicted when parasitoids never encounter an aphid
 # on a Pseudomonas-inhabited plant but always do on plants without Pseudomonas.
-if (!all(file.exists(c(interm_files$large_zeta, interm_files$large_zeta_ninf,
-                       interm_files$large_zeta_nopseudo)))) {
+if (!all(file.exists(c(interm_files$large_zeta, interm_files$large_zeta_ninf)))) {
     stop("Run 02-large-hpc/04-large-emp-zeta.R first!")
 }
 
@@ -61,7 +60,7 @@ zeta_one_ests <- zeta_sim_summs |>
 
 # They are the same across whether Pseudomonas is on plant:
 zeta_one_ests$zeta_d |> max()
-# [1] 1.332268e-15
+# [1] 1.110223e-15
 
 zeta_one_ests |> select(n_pseudo, zeta)
 #   n_pseudo  zeta

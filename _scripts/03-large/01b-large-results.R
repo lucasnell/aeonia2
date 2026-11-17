@@ -92,14 +92,14 @@ sim_df |>
     arrange(wasp_resp, p_load, n_pseudo)
 #   wasp_resp p_load n_pseudo n_infected
 #   <fct>      <dbl>    <int>      <dbl>
-# 1 weak        0.05        0       2.58
-# 2 weak        0.05     7000       4.23
-# 3 weak        0.5         0    2151.
-# 4 weak        0.5      7000    4574.
-# 5 strong      0.05        0       2.55
-# 6 strong      0.05     7000       1.46
-# 7 strong      0.5         0    2100.
-# 8 strong      0.5      7000     454.
+# 1 weak        0.05        0       3.36
+# 2 weak        0.05     7000       4.25
+# 3 weak        0.5         0    2024.
+# 4 weak        0.5      7000    4434.
+# 5 strong      0.05        0       2.49
+# 6 strong      0.05     7000       1.5
+# 7 strong      0.5         0    2026.
+# 8 strong      0.5      7000     432.
 
 
 
@@ -142,12 +142,14 @@ if (.overwrite || !file.exists("_plots/main/large-outcomes.pdf")) {
 
 
 
-large_manip_plots <- crossing(cf = par_lvls,
-                              wr = wasp_resp_fct,
-                              onp = c(FALSE, TRUE)) |>
+large_manip_p <- crossing(cf = par_lvls,
+                          wr = wasp_resp_fct,
+                          onp = c(FALSE, TRUE)) |>
     # Bc factors behave weird sometimes (but are needed for sorting crossing):
     mutate(across(where(is.factor), paste)) |>
-    pmap(\(cf, wr, onp) {
+    # Used for tags:
+    mutate(tg = LETTERS[1:n()]) |>
+    pmap(\(cf, wr, onp, tg) {
         col_pal <- c("black", par_pal[[cf]])
         non_defs <- list()
         if (onp) {
@@ -160,37 +162,32 @@ large_manip_plots <- crossing(cf = par_lvls,
         p <- baseline_plotter(outcomes = "n_infected", col_fct = cf,
                               color_vals = col_pal, non_defaults = non_defs,
                               obs_breaks = 0:2 * 3000, obs_max = 7400,
-                              data_df = .data_df)
+                              data_df = .data_df,
+                              p_tag = tg)
         if (wr != levels(wasp_resp_fct)[1] || onp) {
             p <- p + theme(axis.text.y = element_blank())
         }
         if (cf != tail(levels(par_lvls), 1)) {
             p <- p + theme(axis.text.x = element_blank())
         }
-        if (wr == tail(levels(wasp_resp_fct), 1) && onp) {
-            if (cf == tail(levels(par_lvls), 1)) out <- list(p)
-            else out <- c(list(p), rep(list(plot_spacer()), 7))
-        } else out <- list(p, plot_spacer())
-        return(out)
+        return(p)
     }) |>
-    do.call(what = c)
-
-# wrap_plots(large_manip_plots, ncol = 7, guides = "collect", axes = "collect",
-#            widths = c(1, 0.05, 1, 0.2, 1, 0.05, 1),
-#            heights = c(1, 0.05, 1, 0.05, 1)) &
-#     illustrator_theme
+    add_top_labels() |>
+    wrap_plots(design = paste0("MMM#NNN\nO#P#Q#R\nA#B#C#D\n",
+                               "E#F#G#H\nI#J#K#L"),
+               guides = "collect", axis_titles = "collect",
+               widths = c(1, 0.05, 1, 0.2, 1, 0.05, 1),
+               heights = c(0.55, 0.4, rep(1, 3))) &
+    theme(plot.tag.location = "panel",
+          plot.tag.position = c(0.1, 0.9),
+          plot.margin = margin(0,0,0,0))
 
 
 
 
 if (.overwrite || !file.exists("_plots/supp/large-baselines.pdf")) {
-    save_plot("_plots/supp/large-baselines.pdf",
-              wrap_plots(large_manip_plots, ncol = 7, guides = "collect",
-                         axis_titles = "collect",
-                         widths = c(1, 0.05, 1, 0.2, 1, 0.05, 1),
-                         heights = c(1, 0.05, 1, 0.05, 1)) &
-                  illustrator_theme,
-              width = 6.5, height = 4)
+    save_plot("_plots/supp/large-baselines.pdf", large_manip_p,
+              width = 6.5, height = 6)
 }
 
 
@@ -249,7 +246,7 @@ large_small_outs_main_p <- crossing(cf = par_lvls,
         col_pal <- c("black", par_pal[[cf]])
         non_defs <- list(p_load = 0.05)
         if (onp) non_defs <- c(non_defs, list(wt_vp = "on *Pseudo.*"))
-        obs_max <- case_when(cf == "pseudo_repel" ~ 11.5,
+        obs_max <- case_when(cf == "pseudo_repel" ~ 12.3,
                              cf == "virus_attract" ~ 36.7,
                              cf == "sd_N" ~ 7)
         obs_breaks <- case_when(cf == "pseudo_repel" ~ list(c(1, 6, 11)),

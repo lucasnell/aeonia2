@@ -664,7 +664,7 @@ zeta_brk_df |>
 if (.overwrite || !file.exists("_plots/main/lines-zeta.pdf")) {
     # Line plot for zeta:
     save_plot("_plots/main/lines-zeta.pdf",
-              one_manip_plotter(levels(manip2_sims$wasp_resp), "zeta",
+              one_manip_plotter(levels(wasp_resp_fct), "zeta",
                                 outcomes = "n_infected", .x_pos = "top",
                                 .seed = 65130342) &
                   illustrator_theme,

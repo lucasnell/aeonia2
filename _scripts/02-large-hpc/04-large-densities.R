@@ -19,9 +19,7 @@
 #' directory `~/GitHub/Cornell/aeonia/_scripts`):
 #'
 #' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
-#' export RDS_DIR="/home2/${BIOHPC_USER}/04-large-densities"
-#' scp biohpc:${RDS_DIR}/density-sims.csv \
-#'     ./interm-data/
+#' scp biohpc:/home2/${BIOHPC_USER}/04-large-densities/density-sims.csv ./interm-data/
 
 
 source("../00-large-hpc-preamble.R")
@@ -60,7 +58,7 @@ large_simmer <- function(landscape, wasp_resp, p_load = 0.5, sd_N = 0,
 }
 
 
-# Takes ~26 sec
+# Takes ~20 min
 set.seed(314679353)
 dens_sims <- crossing(wr = wasp_resp_fct,
                       np = n_pseudo_lvls) |>

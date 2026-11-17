@@ -20,8 +20,7 @@
 #' directory `~/GitHub/Cornell/aeonia/_scripts`):
 #'
 #' BIOHPC_USER=$(ssh -G biohpc | awk '/^user /{print $2}')
-#' export RDS_DIR="/home2/${BIOHPC_USER}/05-large-emp-zeta"
-#' scp biohpc:${RDS_DIR}/*.csv ./interm-data/
+#' scp biohpc:/home2/${BIOHPC_USER}/05-large-emp-zeta/*.csv ./interm-data/
 
 
 source("../00-large-hpc-preamble.R")

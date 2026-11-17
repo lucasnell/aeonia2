@@ -339,6 +339,26 @@ void check_plantscape_args(const arma::ucube& landscapes,
         stop("dim(M0) must be c(1,1,1) or dim(landscapes)");
     }
 
+    // Warn if any landscape starts without a virus-infected plant
+    // (codes 1 or 3, i.e., first bit set):
+    uint32 n_no_virus = 0;
+    for (uint32 i = 0; i < n_reps; i++) {
+        bool has_virus = false;
+        for (const uint32& v : landscapes.slice(i)) {
+            if (v % 2U == 1U) {
+                has_virus = true;
+                break;
+            }
+        }
+        if (!has_virus) n_no_virus++;
+    }
+    if (n_no_virus > 0) {
+        std::string msg = std::to_string(n_no_virus) + " of " +
+            std::to_string(n_reps) + " landscape(s) have no virus-infected " +
+            "plant (value 1 or 3), so the virus cannot spread in them.";
+        Rcpp::warning(msg);
+    }
+
     // Each landscape must start with some non-winged aphids:
     for (uint32 i = 0; i < N0.n_slices; i++) {
         if (!(arma::accu(N0.slice(i)) > 0)) {
@@ -483,6 +503,8 @@ void check_plantscape_args(const arma::ucube& landscapes,
 //'     Note that this array is coerced to an array of unsigned integers, so
 //'     negative values will become very large integers.
 //'     Hence, do not expect an error for negative numbers if you pass them here.
+//'     A warning is given for any landscape with no virus-infected plant
+//'     (no value of `1` or `3`), since the virus cannot spread in it.
 //' @param max_t Single integer giving the maximum time the simulations run.
 //' @param N0 Numeric 3D array indicating the starting aphid (non-winged) population
 //'     density for each plant and rep.

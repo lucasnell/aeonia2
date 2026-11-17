@@ -40,7 +40,9 @@ Values in each cell give the state of the plant:
 Values < 0 or > 3 are not allowed.
 Note that this array is coerced to an array of unsigned integers, so
 negative values will become very large integers.
-Hence, do not expect an error for negative numbers if you pass them here.}
+Hence, do not expect an error for negative numbers if you pass them here.
+A warning is given for any landscape with no virus-infected plant
+(no value of \code{1} or \code{3}), since the virus cannot spread in it.}
 
 \item{N0}{Numeric 3D array indicating the starting aphid (non-winged) population
 density for each plant and rep.

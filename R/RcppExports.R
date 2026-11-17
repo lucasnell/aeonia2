@@ -268,6 +268,8 @@ make_disease_ptr <- function(radius, virus_attract, pseudo_repel, p_load_alate, 
 #'     Note that this array is coerced to an array of unsigned integers, so
 #'     negative values will become very large integers.
 #'     Hence, do not expect an error for negative numbers if you pass them here.
+#'     A warning is given for any landscape with no virus-infected plant
+#'     (no value of `1` or `3`), since the virus cannot spread in it.
 #' @param max_t Single integer giving the maximum time the simulations run.
 #' @param N0 Numeric 3D array indicating the starting aphid (non-winged) population
 #'     density for each plant and rep.
