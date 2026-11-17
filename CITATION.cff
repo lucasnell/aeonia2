@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+type: software
+title: >-
+  aeonia: R package and scripts for "Natural enemies can mediate the impact
+  of plant-associated bacteria on insect-borne virus transmission"
+abstract: >-
+  R package that simulates aphid--parasitoid population dynamics and the
+  spread of a nonpersistently transmitted, aphid-borne plant virus on grids
+  of plants, some of which are inhabited by Pseudomonas bacteria, plus the
+  scripts that run the simulations and create the figures for the manuscript
+  "Natural enemies can mediate the impact of plant-associated bacteria on
+  insect-borne virus transmission".
+authors:
+  - given-names: Lucas A.
+    family-names: Nell
+    orcid: "https://orcid.org/0000-0003-3209-0517"
+  - given-names: Tory A.
+    family-names: Hendry
+    orcid: "https://orcid.org/0000-0002-8001-1783"
+  - given-names: Andrew M.
+    family-names: Hein
+    orcid: "https://orcid.org/0000-0001-7217-6185"
+  - given-names: Megan A.
+    family-names: Greischar
+    orcid: "https://orcid.org/0000-0002-7521-9344"
+version: 0.1.0.4
+license: GPL-3.0-or-later
+repository-code: "https://github.com/lucasnell/aeonia2"
+keywords:
+  - aphids
+  - parasitoids
+  - plant virus
+  - Pseudomonas
+  - simulation
+  - R

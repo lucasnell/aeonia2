@@ -11,3 +11,4 @@
 ^_plots$
 ^\.positai$
 ^\.claude$
+^CITATION\.cff$

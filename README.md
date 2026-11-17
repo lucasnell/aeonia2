@@ -9,8 +9,8 @@
 This repo contains the R package `aeonia` that simulates aphid--parasitoid
 dynamics and aphid-borne virus transmission.
 It also contains scripts (many of which use the R package) that are used to
-create figures in the manuscript "Natural enemies can mediate the impact of 
-plant microbiota on insect-borne virus transmission".
+create figures in the manuscript "Natural enemies can mediate the impact of
+plant-associated bacteria on insect-borne virus transmission".
 
 
 # Organization
@@ -21,6 +21,7 @@ This repo contains the following top-level files/folders:
 ├── _plots
 ├── _scripts
 ├── aeonia.Rproj
+├── CITATION.cff
 ├── data
 ├── data-raw
 ├── DESCRIPTION
@@ -46,6 +47,8 @@ Here are descriptions of each:
     each file contains a description of what it contains.
     See "Reproducing the figures" below for more.
 * `aeonia.Rproj`: RStudio project file for this project.
+* `CITATION.cff`: Citation metadata (title, authors, version) for this
+  repository; Zenodo uses it when archiving releases.
 * `data`: Folder containing data used in the R package.
 * `data-raw`: Folder containing a script (`gameofclones.R`) showing how I
   created the objects used in `data`.
