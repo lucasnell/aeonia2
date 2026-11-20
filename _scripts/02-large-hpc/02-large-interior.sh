@@ -183,6 +183,11 @@ difftime(t1, t0, units = "min")
 
 cat("Writing output...\n")
 
+# Drop landscapes before saving: they make up >95% of the file size, no
+# downstream script uses them, and they can be recreated by running the
+# landscape code above (it sets its own seed).
+sim_df[["landscape"]] <- NULL
+
 # Takes about 1 sec:
 write_rds(sim_df, sprintf("large-interior-%02i.rds", curr_idx), compress = "gz")
 

@@ -90,7 +90,10 @@ if (.overwrite || !file.exists(interm_files$extreme_manip)) {
                 list_rbind()
         }) |>
         list_rbind() |>
-        mutate(wasp_resp = factor(wasp_resp, levels = levels(wasp_resp_fct)))
+        mutate(wasp_resp = factor(wasp_resp, levels = levels(wasp_resp_fct))) |>
+        # Only these columns are used below; dropping the population-size
+        # columns shrinks the saved file from ~36 MB to <1 MB:
+        select(wasp_resp, n_pseudo, par_name, par_val, n_infected)
 
     write_rds(manip_sims, interm_files$extreme_manip, compress = "gz")
 

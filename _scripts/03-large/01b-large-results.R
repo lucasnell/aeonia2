@@ -47,8 +47,9 @@ process_large_sim_files <- function(type, .seed) {
                full.names = TRUE) |>
         map(\(x) {
             read_rds(x) |>
-                # Remove this vector immediately bc it's quite large
-                select(-landscape)
+                # Cluster scripts no longer save landscapes, but older output
+                # files have them; remove them immediately bc they're large
+                select(-any_of("landscape"))
         }) |>
         list_rbind() |>
         mutate(outbreak_size = map_dbl(sim, \(x) mean(x$n_infected[x$n_infected > 1])),

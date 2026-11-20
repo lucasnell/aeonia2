@@ -150,6 +150,11 @@ difftime(t1, t0, units = "min")
 
 cat("Writing output...\n")
 
+# Drop landscapes before saving: they make up >95% of the file size, no
+# downstream script uses them, and they are the same as those in large-landscapes.rds
+# (made by the preamble) or the single-virus landscape created above.
+sim_df[["landscape"]] <- NULL
+
 # Takes about 1 sec:
 write_rds(sim_df, sprintf("large-main-%02i.rds", curr_idx), compress = "gz")
 

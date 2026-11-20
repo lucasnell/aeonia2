@@ -39,7 +39,9 @@ of each cluster script.
   viruses across varying *Pseudomonas* occupancies and parasitoid responsiveness
   (created in `_scripts/02-large-hpc/04-large-densities.R`)
 - `extremes-manip-sims.rds`: small-landscape simulations where we manipulate
-  one parameter at a time for weak and strong parasitoid responsiveness
+  one parameter at a time for weak and strong parasitoid responsiveness;
+  only the columns used for plotting are saved (`wasp_resp`, `n_pseudo`,
+  `par_name`, `par_val`, and `n_infected`)
   (created in `_scripts/01-small/02b-extremes-manip.R`)
 - `extremes-manip2-sims.rds`: small-landscape simulations where we manipulate
   two parameters at a time (only starting aphid and parasitoid densities)
@@ -68,6 +70,14 @@ of each cluster script.
   flight radius (`r_fly`) and clustering of *Pseudomonas* locations;
   this folder contains 6 files, `large-r_fly-01.rds` -- `large-r_fly-06.rds`
   (created in `_scripts/02-large-hpc/03-large-r_fly.sh`)
+
+The `large-interior`, `large-main`, and `large-r_fly` files do not store the
+landscape arrays used in each simulation, because no downstream script uses
+them and they made up >95% of each file's size.
+For `large-main` and `large-r_fly`, the landscapes are the ones in
+`large-landscapes.rds` (or, without *Pseudomonas*, a single virus-infected
+plant in the corner); for `large-interior`, they are recreated by the
+landscape code in `_scripts/02-large-hpc/02-large-interior.sh`.
 - `large-zeta-ninf-summs.csv`: In larger landscape simulations, number of
   peak infected plants summarized by parasitoid responsiveness and
   number of *Pseudomonas* plants on landscape
