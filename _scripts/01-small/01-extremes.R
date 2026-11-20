@@ -532,7 +532,9 @@ ninf_weak_strong_hist_list <- levels(wasp_resp_fct) |>
                     return(c(0, 25, 50))
                 } else return(scales::breaks_extended(n = 5)(y))
             }) +
-            labs(x = "Infected plants", y = "Percent of simulations")
+            labs(x = "Infected plants", y = "Percent of simulations") +
+            theme(axis.text.x = element_markdown(size = 10),
+                  axis.text.y = element_markdown(size = 10))
         if (wr == tail(levels(large_sims$wasp_resp), 1))
             p <- p + theme(axis.text.y = element_blank())
         return(p)

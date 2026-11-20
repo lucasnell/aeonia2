@@ -111,11 +111,11 @@ The GitHub repository is named `aeonia2`, but the package it installs is
 
 ``` r
 # If using `renv`:
-renv::install("lucasnell/aeonia2@v0.1.0.4")
+renv::install("lucasnell/aeonia2@v0.1.0.5")
 
 # If not using `renv`:
 if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
-remotes::install_github("lucasnell/aeonia2@v0.1.0.4")
+remotes::install_github("lucasnell/aeonia2@v0.1.0.5")
 
 # If you've downloaded this repo, you can also install from source:
 if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")

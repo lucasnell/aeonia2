@@ -117,8 +117,8 @@ heatmaps_shared <- function(d, yvar, pars_og, par_name_a, par_name_b, .contour_a
 #     unnest(n_infected:outbreak_size)
 # #   n_infected p_emerge outbreak_size
 # #        <dbl>    <dbl>         <dbl>
-# # 1      -2.70   -0.438         -2.29
-# # 2       5.18    0.96           3.97
+# # 1      -2.72   -0.451         -2.33
+# # 2       5.31    0.964          4.03
 
 
 #' `yvar` is Pr(emerge), outbreak size, or # infected
